@@ -1,137 +1,120 @@
-import pygame
-import ctypes
 import random
-import os
-user32 = ctypes.windll.user32
-screensizex = user32.GetSystemMetrics(0)
-screensizey = user32.GetSystemMetrics(1)
-pygame.init()
-x_0 = 33
-y_0 = 30
-movement_speed = 24.5
-x_len = 24
-y_len = 25
-board = [[[(i*movement_speed + x_0, j*movement_speed + y_0), None] for j in range(y_len)] for i in range(x_len)]
-for i in range(x_len):
-    for j in range(y_len):
-        if (i == 0 and j != 5 and j != 18) or (j == 0 and i != 7 and i != 16) or (i == 23 and j != 7 and j != 17) or \
-                (j == 24 and i != 9 and i != 14) or (j == 23 and (i == 17 or i == 6)):
-                board[i][j][0] = (0, 0)
-        # study
-        if 1 <= i <= 6 and 1 <= j <= 3:
-            board[i][j][0] = (0, 0)
-        # library
-        if (1 <= i <= 5 and 6 <= j <= 10) or (i == 6 and 7 <= j <= 9):
-            board[i][j][0] = (0, 0)
-        # billiard room
-        if 1 <= i <= 5 and 12 <= j <= 16:
-            board[i][j][0] = (0, 0)
-        # conservatory
-        if(1 <= i <= 4 and 19 <= j <= 23) or (i == 5 and 20 <= j <= 23):
-            board[i][j][0] = (0, 0)
-        # hall
-        if 9 <= i <= 14 and 1 <= j <= 6:
-            board[i][j][0] = (0, 0)
-        # mid board
-        if 9 <= i <= 13 and 8 <= j <= 14:
-            board[i][j][0] = (0, 0)
-        # ballroom
-        if (8 <= i <= 15 and 17 <= j <= 22) or (10 <= i <= 13 and 23 <= j <= 24):
-            board[i][j][0] = (0, 0)
-        # lounge
-        if 17 <= i <= 22 and 1 <= j <= 5:
-            board[i][j][0] = (0, 0)
-        # dining room
-        if (16 <= i <= 22 and 9 <= j <= 14) or (19 <= i <= 22 and j == 15):
-            board[i][j][0] = (0, 0)
-        # kitchen
-        if 18 <= i <= 22 and 18 <= j <= 23:
-            board[i][j][0] = (0, 0)
+from Board import *
+from pictures import *
 
-place_win = (0, 30)
-os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % place_win
-screen = pygame.display.set_mode((screensizex, screensizey), pygame.RESIZABLE)
-pygame.display.set_caption("cluedo")
-choose = pygame.image.load("choseable_tile.png").convert_alpha()
-choose = pygame.transform.rotozoom(choose, 0, 0.6)
-red = pygame.image.load("game_pieces/miss_scarlet.png")
-red = pygame.transform.rotozoom(red, 0, 0.5)
-tile = pygame.image.load("board.jpg")
-tile = pygame.transform.rotozoom(tile, 0, 0.6)
-screen.fill((0, 0, 0))
-pygame.display.flip()
-
-
-def move_options(x, y, steps, grid):
-    global choose
-    if steps != 0:
-        if grid[x][y][0] == (0, 0):
-            return
-        if not y == 0:
-            move_options(x, y-1, steps-1, grid)
-        if not y == 24:
-            move_options(x, y+1, steps-1, grid)
-        if not x == 23:
-            move_options(x+1, y, steps-1, grid)
-        if not x == 0:
-            move_options(x-1, y, steps-1, grid)
-        board[x][y][1] = choose
-
-
-def turn(tiles, posx, posy):
-    rand = random.randint(2, 12)
-    if not posy == 0:
-        move_options(posx, posy - 1, rand, tiles)
-    if not posx == 0:
-        move_options(posx - 1, posy, rand, tiles)
-    if not posy == 24:
-        move_options(posx, posy + 1, rand, tiles)
-    if not posx == 23:
-        move_options(posx + 1, posy, rand, tiles)
-
-
-def draw():
-    global x_len, y_len, screen, board, tile, x_0
-    screen.fill((0, 0, 0))
-    screen.blit(tile, (0, 0))
-    for x in range(x_len):
-        for y in range(y_len):
-            if board[x][y][1] is not None:
-                screen.blit(board[x][y][1], board[x][y][0])
+board = Board()
+pictures = pictures()
 
 
 def main():
-    global red, screen, tile, board, choose
     r_x = 16
     r_y = 0
-    board[r_x][r_y][1] = red
+    y_x = 23
+    y_y = 7
+    g_x = 9
+    g_y = 24
+    p_x = 0
+    p_y = 5
+    b_x = 0
+    b_y = 18
+    w_x = 14
+    w_y = 24
+    board.grid[r_x][r_y].sprite = pictures.red
+    board.grid[y_x][y_y].sprite = pictures.yellow
+    board.grid[g_x][g_y].sprite = pictures.green
+    board.grid[p_x][p_y].sprite = pictures.purple
+    board.grid[b_x][b_y].sprite = pictures.blue
+    board.grid[w_x][w_y].sprite = pictures.white
+    dagger_x = 21
+    dagger_y = 1
+    rope_x = 21
+    rope_y = 10
+    candlestick_x = 1
+    candlestick_y = 1
+    gun_x = 10
+    gun_y = 1
+    pipe_x = 1
+    pipe_y = 7
+    wrench_x = 1
+    wrench_y = 13
+    board.grid[dagger_x][dagger_y].sprite = pictures.dagger
+    board.grid[rope_x][rope_y].sprite = pictures.rope
+    board.grid[candlestick_x][candlestick_y].sprite = pictures.candlestick
+    board.grid[gun_x][gun_y].sprite = pictures.gun
+    board.grid[pipe_x][pipe_y].sprite = pictures.pipe
+    board.grid[wrench_x][wrench_y].sprite = pictures.wrench
+
+    rand_weapon = random.randint(0, 5)
+    rand_suspect = random.randint(0, 5)
+    rand_room = random.randint(0, 8)
+    killer = (pictures.rooms_names[rand_room], pictures.suspects_names[rand_suspect], pictures.weapons_names[rand_weapon])
+
+    players = ["r", "y", "w", "g", "b", "p"]
     running = True
     while running:
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:
-                    running = False
-                if event.key == pygame.K_1:
-                    turn(board, r_x, r_y)
-                    board[r_x][r_y][1] = red
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if event.button == 1:
-                    x_m, y_m = event.pos
-                    x_m = int((x_m - x_0) // movement_speed)
-                    y_m = int((y_m - y_0) // movement_speed)
-                    if board[x_m][y_m][1] is not None:
-                        r_x = x_m
-                        r_y = y_m
-                        for i in range(x_len):
-                            for j in range(y_len):
-                                board[i][j][1] = None
-                        board[r_x][r_y][1] = red
-
-        draw()
-        pygame.display.update()
+        try:
+            for player in players:
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        running = False
+                    if event.type == pygame.KEYDOWN:
+                        if event.key == pygame.K_ESCAPE:
+                            running = False
+                    if event.type == pygame.MOUSEBUTTONDOWN:
+                        mouse_x, mouse_y = event.pos
+                        print(event.pos)
+                        for i in range(3):
+                            for j in range(3):
+                                if pictures.rooms[i][j].x <= mouse_x <= pictures.rooms[i][j].x + 80 and \
+                                        pictures.rooms[i][j].y <= mouse_y <= pictures.rooms[i][j].y + 40:
+                                    if event.button == 1:
+                                        pictures.rooms[i][j].sprite = pictures.check
+                                    if event.button == 3:
+                                        pictures.rooms[i][j].sprite = pictures.red_x
+                                try:
+                                    if pictures.weapons[i][j].x <= mouse_x <= pictures.weapons[i][j].x + 80 and \
+                                            pictures.weapons[i][j].y <= mouse_y <= pictures.weapons[i][j].y + 40:
+                                        if event.button == 1:
+                                            pictures.weapons[i][j].sprite = pictures.check
+                                        if event.button == 3:
+                                            pictures.weapons[i][j].sprite = pictures.red_x
+                                    if pictures.suspects[i][j].x <= mouse_x <= pictures.suspects[i][j].x + 100 and \
+                                            pictures.suspects[i][j].y <= mouse_y <= pictures.suspects[i][j].y + 40:
+                                        if event.button == 1:
+                                            check = pygame.transform.scale(pictures.check, (100, 40))
+                                            pictures.suspects[i][j].sprite = check
+                                        if event.button == 3:
+                                            red_x = pygame.transform.scale(pictures.red_x, (100, 40))
+                                            pictures.suspects[i][j].sprite = red_x
+                                except:
+                                    pass
+                                draw(board)
+                        if event.button == 1:
+                            if (mouse_x >= pictures.roll_button_pos[0]) and (
+                                    mouse_x <= pictures.roll_button_pos[0] + 50) and \
+                                    (mouse_y >= pictures.roll_button_pos[1]) and (
+                                    mouse_y <= pictures.roll_button_pos[1] + 35):
+                                rand = random.randint(1, 6)
+                                rand2 = random.randint(1, 6)
+                                draw_cube(rand, rand2)
+                                pygame.display.update()
+                                rand3 = rand + rand2
+                                board.roll(r_x, r_y, rand3, pictures.red)
+                                for i in range(board.grid_size_x):
+                                    for j in range(board.grid_size_y):
+                                        if board.grid[i][j].sprite is pictures.red:
+                                            r_x = i
+                                            r_y = j
+                        """
+                        if (pictures.accuse_button_pos[0] + 200 >= mouse_x >= pictures.accuse_button_pos[0]) and \
+                                (pictures.accuse_button_pos[1] + 35 >= mouse_y >= pictures.accuse_button_pos[1]):
+                            accuse = pygame.display.set_mode()
+                        """
+                draw(board)
+                pygame.display.update()
+        except:
+            print("got shut down")
+            break
 
 
 if __name__ == '__main__':
