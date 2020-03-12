@@ -6,7 +6,6 @@ class Board_Object:
         self.sprite = None
         self.room = []
         self.door_exit = ""
-        self.optional_door = None
         self.room_name = ""
         self.weapon_place = ()
 

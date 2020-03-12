@@ -21,7 +21,7 @@ class pictures:
     screen = pygame.display.set_mode((screensizex, screensizey), pygame.RESIZABLE)
     pygame.display.set_caption("cluedo")
     # game pieces
-
+    empty = pygame.image.load("game_pieces/empty.png")
     # characters
 
     yellow = pygame.image.load("game_pieces/crl_mustard.png")
@@ -55,8 +55,50 @@ class pictures:
 
     tile = pygame.image.load("game_pieces/board.jpg")
     tile = pygame.transform.rotozoom(tile, 0, 0.6)
-    blue_study_door = pygame.image.load("game_pieces/study_door.png")
-    blue_study_door = pygame.transform.rotozoom(blue_study_door, 0, 0.5)
+    # doors
+    # study
+    study_door = pygame.image.load("game_pieces/study_door.png")
+    study_door = pygame.transform.rotozoom(study_door, 0, 0.5)
+    # library
+    blue_library_door = pygame.image.load("game_pieces/blue_library_door.png")
+    blue_library_door = pygame.transform.rotozoom(blue_library_door, 0, 0.5)
+    red_library_door = pygame.image.load("game_pieces/red_library_door.png")
+    red_library_door = pygame.transform.rotozoom(red_library_door, 0, 0.5)
+    # billiard
+    blue_billiard_door = pygame.image.load("game_pieces/blue_billiard_door.png")
+    blue_billiard_door = pygame.transform.rotozoom(blue_billiard_door, 0, 0.5)
+    red_billiard_door = pygame.image.load("game_pieces/red_billiard_door.png")
+    red_billiard_door = pygame.transform.rotozoom(red_billiard_door, 0, 0.5)
+    # conservatory
+    conservatory_door = pygame.image.load("game_pieces/conservatory_door.png")
+    conservatory_door = pygame.transform.rotozoom(conservatory_door, 0, 0.5)
+    # hall
+    blue_hall_door = pygame.image.load("game_pieces/blue_hall_door.png")
+    blue_hall_door = pygame.transform.rotozoom(blue_hall_door, 0, 0.5)
+    red_hall_door = pygame.image.load("game_pieces/red_hall_door.png")
+    red_hall_door = pygame.transform.rotozoom(red_hall_door, 0, 0.5)
+    green_hall_door = pygame.image.load("game_pieces/green_hall_door.png")
+    green_hall_door = pygame.transform.rotozoom(green_hall_door, 0, 0.5)
+    # ballroom
+    blue_ball_door = pygame.image.load("game_pieces/blue_ball_door.png")
+    blue_ball_door = pygame.transform.rotozoom(blue_ball_door, 0, 0.5)
+    red_ball_door = pygame.image.load("game_pieces/red_ball_door.png")
+    red_ball_door = pygame.transform.rotozoom(red_ball_door, 0, 0.5)
+    green_ball_door = pygame.image.load("game_pieces/green_ball_door.png")
+    green_ball_door = pygame.transform.rotozoom(green_ball_door, 0, 0.5)
+    yellow_ball_door = pygame.image.load("game_pieces/yellow_ball_door.png")
+    yellow_ball_door = pygame.transform.rotozoom(yellow_ball_door, 0, 0.5)
+    # lounge
+    lounge_door = pygame.image.load("game_pieces/lounge_door.png")
+    lounge_door = pygame.transform.rotozoom(lounge_door, 0, 0.5)
+    # dining room
+    blue_dining_door = pygame.image.load("game_pieces/blue_dining_door.png")
+    blue_dining_door = pygame.transform.rotozoom(blue_dining_door, 0, 0.5)
+    red_dinning_door = pygame.image.load("game_pieces/red_dining_door.png")
+    red_dinning_door = pygame.transform.rotozoom(red_dinning_door, 0, 0.5)
+    # kitchen
+    kitchen_door = pygame.image.load("game_pieces/kitchen_door.png")
+    kitchen_door = pygame.transform.rotozoom(kitchen_door, 0, 0.5)
     screen.fill(Black)
     # clue lists
     # marks

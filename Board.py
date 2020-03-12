@@ -29,7 +29,6 @@ class Board:
                 if i == 6 and j == 3:
                     self.grid[i][j].ident = "door"
                     self.grid[i][j].door_exit = "down"
-                    self.grid[i][j].optional_door = pictures.blue_study_door
 
                 # library
                 if (1 <= i <= 5 and (6 == j or j == 10)) or (i == 6 and (7 == j or j == 9)):
@@ -66,6 +65,8 @@ class Board:
                 if i == 4 and j == 19:
                     self.grid[i][j].ident = "door"
                     self.grid[i][j].door_exit = "right"
+                if i == 4 and j == 20:
+                    self.grid[i][j].sprite = pictures.empty
 
                 # hall
                 if ((9 == i or 14 == i)and 1 <= j <= 6) or (j == 6 and 9 <= i <= 14):
@@ -110,7 +111,6 @@ class Board:
                     self.grid[i][j].ident = "door"
                     self.grid[i][j].door_exit = "down"
 
-
                 # dining room
                 if (16 <= i <= 22 and 9 == j) or (19 <= i <= 22 and j == 15) or (i == 16 and 9 <= j <= 14) or (j == 14 and 16 <= i <= 18):
                     self.grid[i][j].ident = "wall"
@@ -150,7 +150,6 @@ class Board:
             if self.grid[posx][posy].ident != "floor" or \
                     (self.grid[posx][posy].has_sprite() and self.grid[posx][posy].sprite is not myself):
                 if self.grid[posx][posy].ident == "door":
-                    self.grid[posx][posy].sprite = None
                     for i in range(len(self.grid[posx][posy].room)):
                         if self.grid[posx][posy].room[i].sprite is myself:
                             self.grid[posx][posy].room[i].sprite = None
@@ -172,6 +171,7 @@ class Board:
                         for i in range(len(self.grid[posx][posy].room)):
                             if not self.grid[posx][posy].room[i].has_sprite():
                                 self.grid[posx][posy].room[i].sprite = myself
+                                self.grid[posx][posy].sprite = None
                                 return
             draw(self)
             waiting = True
@@ -228,9 +228,9 @@ class Board:
                                     self.grid[posx][posy+1].sprite = myself
                                     draw(self)
                                     self.move(posx, posy+1, steps-1, myself)
-            if steps == 0:
+            """if steps == 0:
                 self.grid[posx][posy].sprite = myself
-
+            """
         if self.grid[posx][posy].ident != "floor" or \
                 (self.grid[posx][posy].has_sprite() and self.grid[posx][posy].sprite is not myself):
             if self.grid[posx][posy].ident == "door":
@@ -239,14 +239,21 @@ class Board:
                         self.grid[posx][posy].room[i].sprite = myself
                         return
 
-    def roll(self, x, y, rand, me):
+    def roll(self, x, y, rand, me, live):
         if self.grid[x][y].ident == "room":
             x1, y1, x2, y2, x3, y3, x4, y4 = self.find_door(x, y)
 
             not_pressed = True
-            while not_pressed:
+            while not_pressed and live:
                 draw(self)
                 for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        live = False
+                        return
+                    if event.type == pygame.KEYDOWN:
+                        if event.key == pygame.K_ESCAPE:
+                            live = False
+                            return
                     if event.type == pygame.KEYDOWN:
                         if event.key == pygame.K_1:
                             x = x1
@@ -267,6 +274,11 @@ class Board:
                                 x = x4
                                 y = y4
                                 not_pressed = False
+
+            self.grid[x1][y1].sprite = None
+            self.grid[x2][y2].sprite = None
+            self.grid[x3][y3].sprite = None
+            self.grid[x4][y4].sprite = None
 
         self.move(x, y, rand, me)
 
@@ -293,45 +305,63 @@ class Board:
         if self.grid[x][y].room_name == "study":
             x1 = 6
             y1 = 3
-            self.grid[x1][y1].sprite = self.grid[x][y].optional_door
+            self.grid[x1][y1].sprite = pictures.study_door
         if self.grid[x][y].room_name == "library":
             x1 = 6
             y1 = 8
+            self.grid[x1][y1].sprite = pictures.blue_library_door
             x2 = 3
             y2 = 10
+            self.grid[x2][y2].sprite = pictures.red_library_door
         if self.grid[x][y].room_name == "billiard":
             x1 = 1
             y1 = 12
+            self.grid[x1][y1].sprite = pictures.blue_billiard_door
             x2 = 5
             y2 = 15
+            self.grid[x2][y2].sprite = pictures.red_billiard_door
         if self.grid[x][y].room_name == "conservatory":
             x1 = 4
             y1 = 19
+            self.grid[x1][y1].sprite = pictures.conservatory_door
         if self.grid[x][y].room_name == "hall":
             x1 = 11
             y1 = 6
+            self.grid[x1][y1].sprite = pictures.blue_hall_door
             x2 = 12
             y2 = 6
+            self.grid[x2][y2].sprite = pictures.red_hall_door
             x3 = 9
             y3 = 4
+            self.grid[x3][y3].sprite = pictures.green_hall_door
         if self.grid[x][y].room_name == "ballroom":
             x1 = 9
             y1 = 17
+            self.grid[x1][y1].sprite = pictures.blue_ball_door
             x2 = 14
             y2 = 17
+            self.grid[x2][y2].sprite = pictures.red_ball_door
             x3 = 8
             y3 = 19
+            self.grid[x3][y3].sprite = pictures.green_ball_door
             x4 = 15
             y4 = 19
+            self.grid[x4][y4].sprite = pictures.yellow_ball_door
         if self.grid[x][y].room_name == "lounge":
             x1 = 17
             y1 = 5
+            self.grid[x1][y1].sprite = pictures.lounge_door
         if self.grid[x][y].room_name == "dining":
             x1 = 17
             y1 = 9
+            self.grid[x1][y1].sprite = pictures.blue_dining_door
             x2 = 16
             y2 = 12
+            self.grid[x2][y2].sprite = pictures.red_dinning_door
         if self.grid[x][y].room_name == "kitchen":
             x1 = 19
             y1 = 18
+            self.grid[x1][y1].sprite = pictures.kitchen_door
+
+        draw(self)
         return x1, y1, x2, y2, x3, y3, x4, y4

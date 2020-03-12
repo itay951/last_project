@@ -99,7 +99,7 @@ def main():
                                 draw_cube(rand, rand2)
                                 pygame.display.update()
                                 rand3 = rand + rand2
-                                board.roll(r_x, r_y, rand3, pictures.red)
+                                board.roll(r_x, r_y, rand3, pictures.red, running)
                                 for i in range(board.grid_size_x):
                                     for j in range(board.grid_size_y):
                                         if board.grid[i][j].sprite is pictures.red:
