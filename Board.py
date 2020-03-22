@@ -1,4 +1,3 @@
-from Board_Object import *
 from pictures import *
 
 
@@ -228,32 +227,29 @@ class Board:
                                     self.grid[posx][posy+1].sprite = myself
                                     draw(self)
                                     self.move(posx, posy+1, steps-1, myself)
-            """if steps == 0:
-                self.grid[posx][posy].sprite = myself
-            """
+
         if self.grid[posx][posy].ident != "floor" or \
                 (self.grid[posx][posy].has_sprite() and self.grid[posx][posy].sprite is not myself):
             if self.grid[posx][posy].ident == "door":
                 for i in range(len(self.grid[posx][posy].room)):
                     if not self.grid[posx][posy].room[i].has_sprite():
+                        self.grid[posx][posy].sprite = None
                         self.grid[posx][posy].room[i].sprite = myself
                         return
 
-    def roll(self, x, y, rand, me, live):
+    def roll(self, x, y, rand, me):
         if self.grid[x][y].ident == "room":
             x1, y1, x2, y2, x3, y3, x4, y4 = self.find_door(x, y)
 
             not_pressed = True
-            while not_pressed and live:
+            while not_pressed:
                 draw(self)
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
-                        live = False
-                        return
+                        return True
                     if event.type == pygame.KEYDOWN:
                         if event.key == pygame.K_ESCAPE:
-                            live = False
-                            return
+                            return True
                     if event.type == pygame.KEYDOWN:
                         if event.key == pygame.K_1:
                             x = x1

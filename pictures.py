@@ -100,7 +100,9 @@ class pictures:
     kitchen_door = pygame.image.load("game_pieces/kitchen_door.png")
     kitchen_door = pygame.transform.rotozoom(kitchen_door, 0, 0.5)
     screen.fill(Black)
+
     # clue lists
+
     # marks
     check = pygame.image.load("green_check.png")
     check = pygame.transform.scale(check, (80, 40))
@@ -128,7 +130,7 @@ class pictures:
             screen.blit(font.render(weapons_names[k], True, Black, White), (weapons[i][j].x, weapons[i][j].y + 15))
             k += 1
     # suspects
-    suspects_names = ["Miss Scarlett", "Mr. Green", "Colonel Mustard", "Mrs. Peacock", "Prof. Plum", "Mrs. White"]
+    suspects_names = ["Miss Scarlett", "Rev. Green", "Colonel Mustard", "Mrs. Peacock", "Professor Plum", "Mrs. White"]
     font = pygame.font.Font('freesansbold.ttf', 12)
     suspects = [[Board_Object(670 + i * 105, 50 + j * 45) for i in range(3)] for j in range(2)]
     k = 0
@@ -143,15 +145,17 @@ class pictures:
     font = pygame.font.Font('freesansbold.ttf', 32)
     roll = font.render('roll', True, Black, White)
     roll_button = roll.get_rect()
-    question = font.render('questioning', True, Black, White)
+    question = font.render('suggestion', True, Black, White)
     question_button = question.get_rect()
     accuse = font.render('accusation', True, Black, White)
     accuse_button = question.get_rect()
+    cards = font.render('cards', True, Black, White)
     # positions
 
     roll_button_pos = (screensizex * 5 // 9, screensizey * 5 // 8)
     question_button_pos = (screensizex * 6 // 10 + 15, screensizey * 5 // 8)
     accuse_button_pos = (screensizex * 7 // 9 + 30, screensizey * 5 // 8)
+    cards_button_pos = (screensizex * 6 // 10 + 105, screensizey * 4 // 8 + 10)
     cube1_pos = (screensizex * 4 // 7 + 30, screensizey * 6 // 8 - 30)
     cube2_pos = (screensizex * 6 // 8 + 40, screensizey * 6 // 8 - 30)
 
@@ -180,6 +184,7 @@ def draw(board):
     pictures.screen.blit(pictures.roll, pictures.roll_button_pos)
     pictures.screen.blit(pictures.question, pictures.question_button_pos)
     pictures.screen.blit(pictures.accuse, pictures.accuse_button_pos)
+    pictures.screen.blit(pictures.cards, pictures.cards_button_pos)
     pygame.display.flip()
 
 
