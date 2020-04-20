@@ -119,9 +119,9 @@ class pictures:
     font = pygame.font.Font('freesansbold.ttf', 12)
 
     # marks
-    check = pygame.image.load("green_check.png")
+    check = pygame.image.load("game_pieces/green_check.png")
     check = pygame.transform.scale(check, (80, 40))
-    red_x = pygame.image.load("red_x.png")
+    red_x = pygame.image.load("game_pieces/red_x.png")
     red_x = pygame.transform.scale(red_x, (80, 40))
 
     # rooms
