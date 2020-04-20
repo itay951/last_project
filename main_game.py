@@ -3,6 +3,7 @@ from Board import *
 from pictures import *
 from Sprite import *
 import socket
+import time
 
 
 board = Board()
@@ -27,130 +28,151 @@ my_character = None
 def make_cards(massage):
     for i in range(len(massage)):
         if massage[i] == "Miss Scarlett":
-            my_cards.append(Sprite(massage[i], 670 + 135 * i, 35, pictures.miss_scarlet_card))
-            if i == 4:
+            if i < 4:
+                my_cards.append(Sprite(massage[i], 670 + 135 * i, 35, pictures.miss_scarlet_card))
+            elif i == 4:
                 my_cards.append(Sprite(massage[i], 670, 210, pictures.miss_scarlet_card))
-            if i == 5:
+            elif i == 5:
                 my_cards.append(Sprite(massage[i], 1075, 210, pictures.miss_scarlet_card))
-        if massage[i] == "Rev. Green":
-            my_cards.append(Sprite(massage[i], 670 + 135 * i, 35, pictures.rev_green_card))
-            if i == 4:
+        elif massage[i] == "Rev. Green":
+            if i < 4:
+                my_cards.append(Sprite(massage[i], 670 + 135 * i, 35, pictures.rev_green_card))
+            elif i == 4:
                 my_cards.append(Sprite(massage[i], 670, 210, pictures.rev_green_card))
-            if i == 5:
+            elif i == 5:
                 my_cards.append(Sprite(massage[i], 1075, 210, pictures.rev_green_card))
-        if massage[i] == "Colonel Mustard":
-            my_cards.append(Sprite(massage[i], 670 + 135 * i, 35, pictures.col_mustard_card))
-            if i == 4:
+        elif massage[i] == "Colonel Mustard":
+            if i < 4:
+                my_cards.append(Sprite(massage[i], 670 + 135 * i, 35, pictures.col_mustard_card))
+            elif i == 4:
                 my_cards.append(Sprite(massage[i], 670, 210, pictures.col_mustard_card))
-            if i == 5:
+            elif i == 5:
                 my_cards.append(Sprite(massage[i], 1075, 210, pictures.col_mustard_card))
-        if massage[i] == "Mrs. Peacock":
-            my_cards.append(Sprite(massage[i], 670 + 135 * i, 35, pictures.mrs_peacock_card))
-            if i == 4:
+        elif massage[i] == "Mrs. Peacock":
+            if i < 4:
+                my_cards.append(Sprite(massage[i], 670 + 135 * i, 35, pictures.mrs_peacock_card))
+            elif i == 4:
                 my_cards.append(Sprite(massage[i], 670, 210, pictures.mrs_peacock_card))
-            if i == 5:
+            elif i == 5:
                 my_cards.append(Sprite(massage[i], 1075, 210, pictures.mrs_peacock_card))
-        if massage[i] == "Professor Plum":
-            my_cards.append(Sprite(massage[i], 670 + 135 * i, 35, pictures.professor_plum_card))
-            if i == 4:
+        elif massage[i] == "Professor Plum":
+            if i < 4:
+                my_cards.append(Sprite(massage[i], 670 + 135 * i, 35, pictures.professor_plum_card))
+            elif i == 4:
                 my_cards.append(Sprite(massage[i], 670, 210, pictures.professor_plum_card))
-            if i == 5:
+            elif i == 5:
                 my_cards.append(Sprite(massage[i], 1075, 210, pictures.professor_plum_card))
-        if massage[i] == "Mrs. White":
-            my_cards.append(Sprite(massage[i], 670 + 135 * i, 35, pictures.mrs_white_card))
-            if i == 4:
+        elif massage[i] == "Mrs. White":
+            if i < 4:
+                my_cards.append(Sprite(massage[i], 670 + 135 * i, 35, pictures.mrs_white_card))
+            elif i == 4:
                 my_cards.append(Sprite(massage[i], 670, 210, pictures.mrs_white_card))
-            if i == 5:
+            elif i == 5:
                 my_cards.append(Sprite(massage[i], 1075, 210, pictures.mrs_white_card))
-        if massage[i] == "dagger":
-            my_cards.append(Sprite(massage[i], 670 + 135 * i, 35, pictures.dagger_card))
-            if i == 4:
+        elif massage[i] == "dagger":
+            if i < 4:
+                my_cards.append(Sprite(massage[i], 670 + 135 * i, 35, pictures.dagger_card))
+            elif i == 4:
                 my_cards.append(Sprite(massage[i], 670, 210, pictures.dagger_card))
-            if i == 5:
+            elif i == 5:
                 my_cards.append(Sprite(massage[i], 1075, 210, pictures.dagger_card))
-        if massage[i] == "lead pipe":
-            my_cards.append(Sprite(massage[i], 670 + 135 * i, 35, pictures.lead_pipe_card))
-            if i == 4:
+        elif massage[i] == "lead pipe":
+            if i < 4:
+                my_cards.append(Sprite(massage[i], 670 + 135 * i, 35, pictures.lead_pipe_card))
+            elif i == 4:
                 my_cards.append(Sprite(massage[i], 670, 210, pictures.lead_pipe_card))
-            if i == 5:
+            elif i == 5:
                 my_cards.append(Sprite(massage[i], 1075, 210, pictures.lead_pipe_card))
-        if massage[i] == "candlestick":
-            my_cards.append(Sprite(massage[i], 670 + 135 * i, 35, pictures.candlestick_card))
-            if i == 4:
+        elif massage[i] == "candlestick":
+            if i < 4:
+                my_cards.append(Sprite(massage[i], 670 + 135 * i, 35, pictures.candlestick_card))
+            elif i == 4:
                 my_cards.append(Sprite(massage[i], 670, 210, pictures.candlestick_card))
-            if i == 5:
+            elif i == 5:
                 my_cards.append(Sprite(massage[i], 1075, 210, pictures.candlestick_card))
-        if massage[i] == "revolver":
-            my_cards.append(Sprite(massage[i], 670 + 135 * i, 35, pictures.gun_card))
-            if i == 4:
+        elif massage[i] == "revolver":
+            if i < 4:
+                my_cards.append(Sprite(massage[i], 670 + 135 * i, 35, pictures.gun_card))
+            elif i == 4:
                 my_cards.append(Sprite(massage[i], 670, 210, pictures.gun_card))
-            if i == 5:
+            elif i == 5:
                 my_cards.append(Sprite(massage[i], 1075, 210, pictures.gun_card))
-        if massage[i] == "rope":
-            my_cards.append(Sprite(massage[i], 670 + 135 * i, 35, pictures.rope_card))
-            if i == 4:
+        elif massage[i] == "rope":
+            if i < 4:
+                my_cards.append(Sprite(massage[i], 670 + 135 * i, 35, pictures.rope_card))
+            elif i == 4:
                 my_cards.append(Sprite(massage[i], 670, 210, pictures.rope_card))
-            if i == 5:
+            elif i == 5:
                 my_cards.append(Sprite(massage[i], 1075, 210, pictures.rope_card))
-        if massage[i] == "wrench":
-            my_cards.append(Sprite(massage[i], 670 + 135 * i, 35, pictures.wrench_card))
-            if i == 4:
+        elif massage[i] == "wrench":
+            if i < 4:
+                my_cards.append(Sprite(massage[i], 670 + 135 * i, 35, pictures.wrench_card))
+            elif i == 4:
                 my_cards.append(Sprite(massage[i], 670, 210, pictures.wrench_card))
-            if i == 5:
+            elif i == 5:
                 my_cards.append(Sprite(massage[i], 1075, 210, pictures.wrench_card))
-        if massage[i] == "study":
-            my_cards.append(Sprite(massage[i], 670 + 135 * i, 35, pictures.study_card))
-            if i == 4:
+        elif massage[i] == "study":
+            if i < 4:
+                my_cards.append(Sprite(massage[i], 670 + 135 * i, 35, pictures.study_card))
+            elif i == 4:
                 my_cards.append(Sprite(massage[i], 670, 210, pictures.study_card))
-            if i == 5:
+            elif i == 5:
                 my_cards.append(Sprite(massage[i], 1075, 210, pictures.study_card))
-        if massage[i] == "library":
-            my_cards.append(Sprite(massage[i], 670 + 135 * i, 35, pictures.library_card))
-            if i == 4:
+        elif massage[i] == "library":
+            if i < 4:
+                my_cards.append(Sprite(massage[i], 670 + 135 * i, 35, pictures.library_card))
+            elif i == 4:
                 my_cards.append(Sprite(massage[i], 670, 210, pictures.library_card))
-            if i == 5:
+            elif i == 5:
                 my_cards.append(Sprite(massage[i], 1075, 210, pictures.library_card))
-        if massage[i] == "billiard room":
-            my_cards.append(Sprite(massage[i], 670 + 135 * i, 35, pictures.billiard_card))
-            if i == 4:
+        elif massage[i] == "billiard room":
+            if i < 4:
+                my_cards.append(Sprite(massage[i], 670 + 135 * i, 35, pictures.billiard_card))
+            elif i == 4:
                 my_cards.append(Sprite(massage[i], 670, 210, pictures.billiard_card))
-            if i == 5:
+            elif i == 5:
                 my_cards.append(Sprite(massage[i], 1075, 210, pictures.billiard_card))
-        if massage[i] == "conservatory":
-            my_cards.append(Sprite(massage[i], 670 + 135 * i, 35, pictures.conservatory_card))
-            if i == 4:
+        elif massage[i] == "conservatory":
+            if i < 4:
+                my_cards.append(Sprite(massage[i], 670 + 135 * i, 35, pictures.conservatory_card))
+            elif i == 4:
                 my_cards.append(Sprite(massage[i], 670, 210, pictures.conservatory_card))
-            if i == 5:
+            elif i == 5:
                 my_cards.append(Sprite(massage[i], 1075, 210, pictures.conservatory_card))
-        if massage[i] == "hall":
-            my_cards.append(Sprite(massage[i], 670 + 135 * i, 35, pictures.hall_card))
-            if i == 4:
+        elif massage[i] == "hall":
+            if i < 4:
+                my_cards.append(Sprite(massage[i], 670 + 135 * i, 35, pictures.hall_card))
+            elif i == 4:
                 my_cards.append(Sprite(massage[i], 670, 210, pictures.hall_card))
-            if i == 5:
+            elif i == 5:
                 my_cards.append(Sprite(massage[i], 1075, 210, pictures.hall_card))
-        if massage[i] == "ballroom":
-            my_cards.append(Sprite(massage[i], 670 + 135 * i, 35, pictures.ballroom_card))
-            if i == 4:
+        elif massage[i] == "ballroom":
+            if i < 4:
+                my_cards.append(Sprite(massage[i], 670 + 135 * i, 35, pictures.ballroom_card))
+            elif i == 4:
                 my_cards.append(Sprite(massage[i], 670, 210, pictures.ballroom_card))
-            if i == 5:
+            elif i == 5:
                 my_cards.append(Sprite(massage[i], 1075, 210, pictures.ballroom_card))
-        if massage[i] == "lounge":
-            my_cards.append(Sprite(massage[i], 670 + 135 * i, 35, pictures.lounge_card))
-            if i == 4:
+        elif massage[i] == "lounge":
+            if i < 4:
+                my_cards.append(Sprite(massage[i], 670 + 135 * i, 35, pictures.lounge_card))
+            elif i == 4:
                 my_cards.append(Sprite(massage[i], 670, 210, pictures.lounge_card))
-            if i == 5:
+            elif i == 5:
                 my_cards.append(Sprite(massage[i], 1075, 210, pictures.lounge_card))
-        if massage[i] == "dining room":
-            my_cards.append(Sprite(massage[i], 670 + 135 * i, 35, pictures.dining_card))
-            if i == 4:
+        elif massage[i] == "dining room":
+            if i < 4:
+                my_cards.append(Sprite(massage[i], 670 + 135 * i, 35, pictures.dining_card))
+            elif i == 4:
                 my_cards.append(Sprite(massage[i], 670, 210, pictures.dining_card))
-            if i == 5:
+            elif i == 5:
                 my_cards.append(Sprite(massage[i], 1075, 210, pictures.dining_card))
-        if massage[i] == "kitchen":
-            my_cards.append(Sprite(massage[i], 670 + 135 * i, 35, pictures.kitchen_card))
-            if i == 4:
+        elif massage[i] == "kitchen":
+            if i < 4:
+                my_cards.append(Sprite(massage[i], 670 + 135 * i, 35, pictures.kitchen_card))
+            elif i == 4:
                 my_cards.append(Sprite(massage[i], 670, 210, pictures.kitchen_card))
-            if i == 5:
+            elif i == 5:
                 my_cards.append(Sprite(massage[i], 1075, 210, pictures.kitchen_card))
 
 
@@ -320,7 +342,9 @@ def main():
                             game = move(deck_up)
                             played = True
                             client_socket.send(("update," + my_character.name + "," + str(my_character.x) + "," + str(my_character.y)).encode())
-                            client_socket.send("end".encode())
+                            time.sleep(1)
+                            client_socket.send("end, ".encode())
+                            print("sent")
                         if (pictures.cards_button_pos[0] <= mouse_x <= pictures.cards_button_pos[0] + 100) and \
                                 (pictures.cards_button_pos[1] <= mouse_y <= pictures.cards_button_pos[1] + 35):
                             deck_up = True
@@ -330,12 +354,14 @@ def main():
                             accuse()
                             played = True
                             client_socket.send(("update," + my_character.name + "," + str(my_character.x) + "," + str(my_character.y)).encode())
+                            time.sleep(0.01)
                             client_socket.send("end".encode())
                         if (pictures.question_button_pos[0] + 200 >= mouse_x >= pictures.question_button_pos[0]) and \
                                 (pictures.question_button_pos[1] + 35 >= mouse_y >= pictures.question_button_pos[1]):
                             ask()
                             played = True
                             client_socket.send(("update," + my_character.name + "," + str(my_character.x) + "," + str(my_character.y)).encode())
+                            time.sleep(0.01)
                             client_socket.send("end".encode())
                         if (pictures.lists_button_pos[0] + 75 >= mouse_x >= pictures.lists_button_pos[0]) and \
                                 (pictures.lists_button_pos[1] + 35 >= mouse_y >= pictures.lists_button_pos[1]):
