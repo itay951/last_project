@@ -1,4 +1,5 @@
 from pictures import *
+from Board_Object import *
 
 
 class Board:
@@ -143,36 +144,36 @@ class Board:
                     self.room(i-1, j-1, self.grid[i][j].room)
                     self.room(i+1, j-1, self.grid[i][j].room)
 
-    def move(self, posx, posy, steps, myself):
+    def move(self, myself, steps, deck, cards):
         if steps != 0:
             breaked = False
-            if self.grid[posx][posy].ident != "floor" or \
-                    (self.grid[posx][posy].has_sprite() and self.grid[posx][posy].sprite is not myself):
-                if self.grid[posx][posy].ident == "door":
-                    for i in range(len(self.grid[posx][posy].room)):
-                        if self.grid[posx][posy].room[i].sprite is myself:
-                            self.grid[posx][posy].room[i].sprite = None
-                            if self.grid[posx][posy].door_exit == "left":
-                                self.grid[posx-1][posy].sprite = myself
-                                posx = posx-1
-                            if self.grid[posx][posy].door_exit == "right":
-                                self.grid[posx+1][posy].sprite = myself
-                                posx = posx+1
-                            if self.grid[posx][posy].door_exit == "up":
-                                self.grid[posx][posy-1].sprite = myself
-                                posy = posy-1
-                            if self.grid[posx][posy].door_exit == "down":
-                                self.grid[posx][posy+1].sprite = myself
-                                posy = posy+1
+            if self.grid[myself.x][myself.y].ident != "floor" or \
+                    (self.grid[myself.x][myself.y].has_sprite() and self.grid[myself.x][myself.y].sprite is not myself):
+                if self.grid[myself.x][myself.y].ident == "door":
+                    for i in range(len(self.grid[myself.x][myself.y].room)):
+                        if self.grid[myself.x][myself.y].room[i].sprite is myself.img:
+                            self.grid[myself.x][myself.y].room[i].sprite = None
+                            if self.grid[myself.x][myself.y].door_exit == "left":
+                                self.grid[myself.x-1][myself.y].sprite = myself.img
+                                myself.x = myself.x-1
+                            if self.grid[myself.x][myself.y].door_exit == "right":
+                                self.grid[myself.x+1][myself.y].sprite = myself.img
+                                myself.x = myself.x+1
+                            if self.grid[myself.x][myself.y].door_exit == "up":
+                                self.grid[myself.x][myself.y-1].sprite = myself.img
+                                myself.y = myself.y-1
+                            if self.grid[myself.x][myself.y].door_exit == "down":
+                                self.grid[myself.x][myself.y+1].sprite = myself.img
+                                myself.y = myself.y+1
                             breaked = True
                             break
                     if not breaked:
-                        for i in range(len(self.grid[posx][posy].room)):
-                            if not self.grid[posx][posy].room[i].has_sprite():
-                                self.grid[posx][posy].room[i].sprite = myself
-                                self.grid[posx][posy].sprite = None
+                        for i in range(len(self.grid[myself.x][myself.y].room)):
+                            if not self.grid[myself.x][myself.y].room[i].has_sprite():
+                                self.grid[myself.x][myself.y].room[i].sprite = myself.img
+                                self.grid[myself.x][myself.y].sprite = None
                                 return
-            draw(self)
+            draw(self, deck, cards)
             waiting = True
             while waiting:
                 for event in pygame.event.get():
@@ -184,66 +185,70 @@ class Board:
                             waiting = False
                             pygame.quit()
                         if event.key == pygame.K_LEFT:
-                            if posx-1 >= 0:
-                                if self.grid[posx-1][posy].ident != "wall":
-                                    if self.grid[posx-1][posy].ident == "door":
-                                        if self.grid[posx-1][posy].door_exit != "right":
+                            if myself.x-1 >= 0:
+                                if self.grid[myself.x-1][myself.y].ident != "wall":
+                                    if self.grid[myself.x-1][myself.y].ident == "door":
+                                        if self.grid[myself.x-1][myself.y].door_exit != "right":
                                             break
                                     waiting = False
-                                    self.grid[posx][posy].sprite = None
-                                    self.grid[posx-1][posy].sprite = myself
-                                    draw(self)
-                                    self.move(posx-1, posy, steps-1, myself)
+                                    self.grid[myself.x][myself.y].sprite = None
+                                    self.grid[myself.x-1][myself.y].sprite = myself.img
+                                    draw(self, deck, cards)
+                                    myself.x -= 1
+                                    self.move(myself, steps-1, deck, cards)
                         if event.key == pygame.K_RIGHT:
-                            if posx+1 <= 23:
-                                if self.grid[posx+1][posy].ident != "wall":
-                                    if self.grid[posx+1][posy].ident == "door":
-                                        if self.grid[posx+1][posy].door_exit != "left":
+                            if myself.x+1 <= 23:
+                                if self.grid[myself.x+1][myself.y].ident != "wall":
+                                    if self.grid[myself.x+1][myself.y].ident == "door":
+                                        if self.grid[myself.x+1][myself.y].door_exit != "left":
                                             break
                                     waiting = False
-                                    self.grid[posx][posy].sprite = None
-                                    self.grid[posx+1][posy].sprite = myself
-                                    draw(self)
-                                    self.move(posx+1, posy, steps-1, myself)
+                                    self.grid[myself.x][myself.y].sprite = None
+                                    self.grid[myself.x+1][myself.y].sprite = myself.img
+                                    draw(self, deck, cards)
+                                    myself.x += 1
+                                    self.move(myself, steps-1, deck, cards)
                         if event.key == pygame.K_UP:
-                            if posy-1 >= 0:
-                                if self.grid[posx][posy-1].ident != "wall":
-                                    if self.grid[posx][posy-1].ident == "door":
-                                        if self.grid[posx][posy-1].door_exit != "down":
+                            if myself.y-1 >= 0:
+                                if self.grid[myself.x][myself.y-1].ident != "wall":
+                                    if self.grid[myself.x][myself.y-1].ident == "door":
+                                        if self.grid[myself.x][myself.y-1].door_exit != "down":
                                             break
                                     waiting = False
-                                    self.grid[posx][posy].sprite = None
-                                    self.grid[posx][posy-1].sprite = myself
-                                    draw(self)
-                                    self.move(posx, posy-1, steps-1, myself)
+                                    self.grid[myself.x][myself.y].sprite = None
+                                    self.grid[myself.x][myself.y-1].sprite = myself.img
+                                    draw(self, deck, cards)
+                                    myself.y -= 1
+                                    self.move(myself, steps-1, deck, cards)
                         if event.key == pygame.K_DOWN:
-                            if posy+1 <= 24:
-                                if self.grid[posx][posy+1].ident != "wall":
-                                    if self.grid[posx][posy+1].ident == "door":
-                                        if self.grid[posx][posy+1].door_exit != "up":
+                            if myself.y+1 <= 24:
+                                if self.grid[myself.x][myself.y+1].ident != "wall":
+                                    if self.grid[myself.x][myself.y+1].ident == "door":
+                                        if self.grid[myself.x][myself.y+1].door_exit != "up":
                                             break
                                     waiting = False
-                                    self.grid[posx][posy].sprite = None
-                                    self.grid[posx][posy+1].sprite = myself
-                                    draw(self)
-                                    self.move(posx, posy+1, steps-1, myself)
+                                    self.grid[myself.x][myself.y].sprite = None
+                                    self.grid[myself.x][myself.y+1].sprite = myself.img
+                                    draw(self, deck, cards)
+                                    myself.y += 1
+                                    self.move(myself, steps-1,  deck, cards)
 
-        if self.grid[posx][posy].ident != "floor" or \
-                (self.grid[posx][posy].has_sprite() and self.grid[posx][posy].sprite is not myself):
-            if self.grid[posx][posy].ident == "door":
-                for i in range(len(self.grid[posx][posy].room)):
-                    if not self.grid[posx][posy].room[i].has_sprite():
-                        self.grid[posx][posy].sprite = None
-                        self.grid[posx][posy].room[i].sprite = myself
+        if self.grid[myself.x][myself.y].ident != "floor" or \
+                (self.grid[myself.x][myself.y].has_sprite() and self.grid[myself.x][myself.y].sprite is not myself.img):
+            if self.grid[myself.x][myself.y].ident == "door":
+                for i in range(len(self.grid[myself.x][myself.y].room)):
+                    if not self.grid[myself.x][myself.y].room[i].has_sprite():
+                        self.grid[myself.x][myself.y].sprite = None
+                        self.grid[myself.x][myself.y].room[i].sprite = myself.img
                         return
 
-    def roll(self, x, y, rand, me):
-        if self.grid[x][y].ident == "room":
-            x1, y1, x2, y2, x3, y3, x4, y4 = self.find_door(x, y)
+    def roll(self, me, rand, deck, cards):
+        if self.grid[me.x][me.y].ident == "room":
+            x1, y1, x2, y2, x3, y3, x4, y4 = self.find_door(me.x, me.y)
 
             not_pressed = True
             while not_pressed:
-                draw(self)
+                draw(self, deck, cards)
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
                         return True
@@ -252,23 +257,23 @@ class Board:
                             return True
                     if event.type == pygame.KEYDOWN:
                         if event.key == pygame.K_1:
-                            x = x1
-                            y = y1
+                            me.x = x1
+                            me.y = y1
                             not_pressed = False
                         if event.key == pygame.K_2:
                             if x2 != 0:
-                                x = x2
-                                y = y2
+                                me.x = x2
+                                me.y = y2
                                 not_pressed = False
                         if event.key == pygame.K_3:
                             if x3 != 0:
-                                x = x3
-                                y = y3
+                                me.x = x3
+                                me.y = y3
                                 not_pressed = False
                         if event.key == pygame.K_4:
                             if x4 != 0:
-                                x = x4
-                                y = y4
+                                me.x = x4
+                                me.y = y4
                                 not_pressed = False
 
             self.grid[x1][y1].sprite = None
@@ -276,7 +281,7 @@ class Board:
             self.grid[x3][y3].sprite = None
             self.grid[x4][y4].sprite = None
 
-        self.move(x, y, rand, me)
+        self.move(me, rand, deck, cards)
 
     def room(self, x, y, arr):
         for i in range(len(arr)):
@@ -359,5 +364,4 @@ class Board:
             y1 = 18
             self.grid[x1][y1].sprite = pictures.kitchen_door
 
-        draw(self)
         return x1, y1, x2, y2, x3, y3, x4, y4
