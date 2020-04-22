@@ -254,7 +254,7 @@ def main():
     client_socket.connect(("127.0.0.1", 8006))
     lobby = True
     wait = False
-    game = False
+    game = True
     played = False
     draw_waiting_room()
     while lobby:
@@ -341,10 +341,15 @@ def main():
                                 (pictures.roll_button_pos[1] <= mouse_y <= pictures.roll_button_pos[1] + 35):
                             game = move(deck_up)
                             played = True
+                            for sprite in sprites:
+                                if sprite.name == my_character.name:
+                                    sprite.x = my_character.x
+                                    sprite.y = my_character.y
+                            update()
+                            draw(board, deck_up, my_cards)
                             client_socket.send(("update," + my_character.name + "," + str(my_character.x) + "," + str(my_character.y)).encode())
                             time.sleep(1)
                             client_socket.send("end, ".encode())
-                            print("sent")
                         if (pictures.cards_button_pos[0] <= mouse_x <= pictures.cards_button_pos[0] + 100) and \
                                 (pictures.cards_button_pos[1] <= mouse_y <= pictures.cards_button_pos[1] + 35):
                             deck_up = True
@@ -353,15 +358,19 @@ def main():
                                 (pictures.accuse_button_pos[1] + 35 >= mouse_y >= pictures.accuse_button_pos[1]):
                             accuse()
                             played = True
+                            update()
+                            draw(board, deck_up, my_cards)
                             client_socket.send(("update," + my_character.name + "," + str(my_character.x) + "," + str(my_character.y)).encode())
-                            time.sleep(0.01)
+                            time.sleep(1)
                             client_socket.send("end".encode())
                         if (pictures.question_button_pos[0] + 200 >= mouse_x >= pictures.question_button_pos[0]) and \
                                 (pictures.question_button_pos[1] + 35 >= mouse_y >= pictures.question_button_pos[1]):
                             ask()
                             played = True
+                            update()
+                            draw(board, deck_up, my_cards)
                             client_socket.send(("update," + my_character.name + "," + str(my_character.x) + "," + str(my_character.y)).encode())
-                            time.sleep(0.01)
+                            time.sleep(1)
                             client_socket.send("end".encode())
                         if (pictures.lists_button_pos[0] + 75 >= mouse_x >= pictures.lists_button_pos[0]) and \
                                 (pictures.lists_button_pos[1] + 35 >= mouse_y >= pictures.lists_button_pos[1]):

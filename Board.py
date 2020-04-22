@@ -146,6 +146,9 @@ class Board:
 
     def move(self, myself, steps, deck, cards):
         if steps != 0:
+            print(myself.x)
+            print(myself.y)
+            print(steps)
             breaked = False
             if self.grid[myself.x][myself.y].ident != "floor" or \
                     (self.grid[myself.x][myself.y].has_sprite() and self.grid[myself.x][myself.y].sprite is not myself):
@@ -168,10 +171,12 @@ class Board:
                             breaked = True
                             break
                     if not breaked:
-                        for i in range(len(self.grid[myself.x][myself.y].room)):
-                            if not self.grid[myself.x][myself.y].room[i].has_sprite():
-                                self.grid[myself.x][myself.y].room[i].sprite = myself.img
+                        for tile in self.grid[myself.x][myself.y].room:
+                            if not tile.has_sprite():
                                 self.grid[myself.x][myself.y].sprite = None
+                                tile.sprite = myself.img
+                                myself.x = int((tile.x - self.x_0)/self.cube_size)
+                                myself.y = int((tile.y - self.y_0)/self.cube_size)
                                 return
             draw(self, deck, cards)
             waiting = True
@@ -189,57 +194,63 @@ class Board:
                                 if self.grid[myself.x-1][myself.y].ident != "wall":
                                     if self.grid[myself.x-1][myself.y].ident == "door":
                                         if self.grid[myself.x-1][myself.y].door_exit != "right":
-                                            break
-                                    waiting = False
-                                    self.grid[myself.x][myself.y].sprite = None
-                                    self.grid[myself.x-1][myself.y].sprite = myself.img
-                                    draw(self, deck, cards)
-                                    myself.x -= 1
-                                    self.move(myself, steps-1, deck, cards)
+                                            continue
+                                    if not self.grid[myself.x-1][myself.y].has_sprite():
+                                        waiting = False
+                                        self.grid[myself.x][myself.y].sprite = None
+                                        self.grid[myself.x-1][myself.y].sprite = myself.img
+                                        draw(self, deck, cards)
+                                        myself.x -= 1
+                                        self.move(myself, steps-1, deck, cards)
                         if event.key == pygame.K_RIGHT:
                             if myself.x+1 <= 23:
                                 if self.grid[myself.x+1][myself.y].ident != "wall":
                                     if self.grid[myself.x+1][myself.y].ident == "door":
                                         if self.grid[myself.x+1][myself.y].door_exit != "left":
-                                            break
-                                    waiting = False
-                                    self.grid[myself.x][myself.y].sprite = None
-                                    self.grid[myself.x+1][myself.y].sprite = myself.img
-                                    draw(self, deck, cards)
-                                    myself.x += 1
-                                    self.move(myself, steps-1, deck, cards)
+                                            continue
+                                    if not self.grid[myself.x+1][myself.y].has_sprite():
+                                        waiting = False
+                                        self.grid[myself.x][myself.y].sprite = None
+                                        self.grid[myself.x+1][myself.y].sprite = myself.img
+                                        draw(self, deck, cards)
+                                        myself.x += 1
+                                        self.move(myself, steps-1, deck, cards)
                         if event.key == pygame.K_UP:
                             if myself.y-1 >= 0:
                                 if self.grid[myself.x][myself.y-1].ident != "wall":
                                     if self.grid[myself.x][myself.y-1].ident == "door":
                                         if self.grid[myself.x][myself.y-1].door_exit != "down":
-                                            break
-                                    waiting = False
-                                    self.grid[myself.x][myself.y].sprite = None
-                                    self.grid[myself.x][myself.y-1].sprite = myself.img
-                                    draw(self, deck, cards)
-                                    myself.y -= 1
-                                    self.move(myself, steps-1, deck, cards)
+                                            continue
+                                    if not self.grid[myself.x][myself.y-1].has_sprite():
+                                        waiting = False
+                                        self.grid[myself.x][myself.y].sprite = None
+                                        self.grid[myself.x][myself.y-1].sprite = myself.img
+                                        draw(self, deck, cards)
+                                        myself.y -= 1
+                                        self.move(myself, steps-1, deck, cards)
                         if event.key == pygame.K_DOWN:
                             if myself.y+1 <= 24:
                                 if self.grid[myself.x][myself.y+1].ident != "wall":
                                     if self.grid[myself.x][myself.y+1].ident == "door":
                                         if self.grid[myself.x][myself.y+1].door_exit != "up":
-                                            break
-                                    waiting = False
-                                    self.grid[myself.x][myself.y].sprite = None
-                                    self.grid[myself.x][myself.y+1].sprite = myself.img
-                                    draw(self, deck, cards)
-                                    myself.y += 1
-                                    self.move(myself, steps-1,  deck, cards)
+                                            continue
+                                    if not self.grid[myself.x][myself.y+1].has_sprite():
+                                        waiting = False
+                                        self.grid[myself.x][myself.y].sprite = None
+                                        self.grid[myself.x][myself.y+1].sprite = myself.img
+                                        draw(self, deck, cards)
+                                        myself.y += 1
+                                        self.move(myself, steps-1,  deck, cards)
 
         if self.grid[myself.x][myself.y].ident != "floor" or \
                 (self.grid[myself.x][myself.y].has_sprite() and self.grid[myself.x][myself.y].sprite is not myself.img):
             if self.grid[myself.x][myself.y].ident == "door":
-                for i in range(len(self.grid[myself.x][myself.y].room)):
-                    if not self.grid[myself.x][myself.y].room[i].has_sprite():
+                for tile in self.grid[myself.x][myself.y].room:
+                    if not tile.has_sprite():
                         self.grid[myself.x][myself.y].sprite = None
-                        self.grid[myself.x][myself.y].room[i].sprite = myself.img
+                        tile.sprite = myself.img
+                        myself.x = int((tile.x - self.x_0)/self.cube_size)
+                        myself.y = int((tile.y - self.y_0)/self.cube_size)
                         return
 
     def roll(self, me, rand, deck, cards):

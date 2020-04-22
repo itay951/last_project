@@ -87,7 +87,6 @@ def send_messages(wlist):
                                 player.send((party.player_cards[party.turn+1][-1] + "accused and was wrong").encode())
                         party.remove(c_s)
                 if data[0] == "end":
-                    print("yes")
                     party.next_turn()
                     for player in party.players:
                         if player is party.players[party.turn]:
@@ -103,16 +102,20 @@ def main():
             if cu_s is s_s:
                 (new_socket, ad) = s_s.accept()
                 o_c_s.append(new_socket)
-
             else:
                 data = cu_s.recv(1024).decode()
                 if data:
                     m_t_s.append((cu_s, data))
                 else:
+                    print(data)
                     if len(o_c_s) != 0:
                         for player in o_c_s:
                             if cu_s == player:
                                 o_c_s.remove(player)
+                        for party in parties:
+                            for player in party.players:
+                                if cu_s == player:
+                                    party.remove(player)
                 send_messages(wlist)
 
 
