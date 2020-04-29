@@ -114,6 +114,8 @@ def send_messages(wlist):
                         else:
                             party.next_turn()
                     for player in party.players:
+                        if party.players[party.turn] == "out":
+                            continue
                         if party.players[party.turn] == player:
                             player.send("turn".encode())
                         else:
