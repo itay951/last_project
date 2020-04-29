@@ -196,6 +196,7 @@ class pictures:
     rev_green_card = pygame.image.load("game_pieces/rev_green_card.png")
     rev_green_card = pygame.transform.rotozoom(rev_green_card, 0, 0.25)
 
+
     # weapons
     candlestick_card = pygame.image.load("game_pieces/candlestick_card.png")
     candlestick_card = pygame.transform.rotozoom(candlestick_card, 0, 0.25)
@@ -209,6 +210,16 @@ class pictures:
     rope_card = pygame.transform.rotozoom(rope_card, 0, 0.25)
     wrench_card = pygame.image.load("game_pieces/wrench_card.png")
     wrench_card = pygame.transform.rotozoom(wrench_card, 0, 0.25)
+
+    characters_cards = [(miss_scarlet_card, "Miss Scarlett"), (rev_green_card, "Rev. Green"),
+                        (col_mustard_card, "Colonel Mustard"), (mrs_peacock_card, "Mrs. Peacock"),
+                        (professor_plum_card, "Professor Plum"), (mrs_white_card, "Mrs. White")]
+    weapons_cards = [(dagger_card, "dagger"), (lead_pipe_card, "lead pipe"),
+                     (candlestick_card, "candlestick"), (rope_card, "rope"),
+                     (gun_card, "revolver"), (wrench_card, "wrench")]
+    rooms_cards = [(ballroom_card, "ballroom"), (billiard_card, "billiard room"), (conservatory_card, "conservatory"),
+                   (dining_card, "dining_room"), (hall_card, "hall"), (kitchen_card, "kitchen"),
+                   (library_card, "library"), (lounge_card, "lounge"), (study_card, "study")]
 
     # cubes
     cube_1 = pygame.image.load("game_pieces/cube_1.png")
@@ -307,3 +318,31 @@ def draw_waiting_room(characters=None, waiting=False):
         for i in range(4):
             pictures.screen.blit(pictures.oppo_amount[i].img, (pictures.oppo_amount[i].x, pictures.oppo_amount[i].y))
     pygame.display.flip()
+
+
+def draw_ask_lists():
+    pictures.screen.fill(pictures.Black)
+    chosen_c = ""
+    chosen_w = ""
+    c_1 = True
+    c_2 = True
+    while c_1 or c_2:
+        for i in range(6):
+            pictures.screen.blit(pictures.characters_cards[i][0], (200 + 150*i, 100))
+            pictures.screen.blit(pictures.weapons_cards[i][0], (200 + 150 * i, 300))
+        pygame.display.flip()
+        for event in pygame.event.get():
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_x, mouse_y = event.pos
+                for i in range(6):
+                    if c_1:
+                        if 100 < mouse_y < 275:
+                            if 200 + 150*i < mouse_x < 320 + 150*i:
+                                chosen_c = pictures.characters_cards[i][1]
+                                c_1 = False
+                    if c_2:
+                        if 300 < mouse_y < 475:
+                            if 200 + 150*i < mouse_x < 320 + 150*i:
+                                chosen_w = pictures.weapons_cards[i][1]
+                                c_2 = False
+    return chosen_c, chosen_w

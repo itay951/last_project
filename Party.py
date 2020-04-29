@@ -41,15 +41,15 @@ class Party:
 
     def remove(self, player):
         for i in range(len(self.players)):
-            if self.full():
-                if self.players[i] is player:
+            if self.players[i] is player:
+                if self.full():
                     self.players[i] = "out"
                     self.size -= 1
-            else:
-                self.suspects.append(self.player_cards[i][-1])
-                self.player_cards[i].pop(-1)
-                self.players.remove(player)
-            self.amount -= 1
+                else:
+                    self.suspects.append(self.player_cards[i][-1])
+                    self.player_cards[i].pop(-1)
+                    self.players.remove(player)
+                self.amount -= 1
 
     def next_turn(self):
         self.turn += 1
@@ -58,3 +58,10 @@ class Party:
 
     def fileno(self):
         return self.players[0].fileno()
+
+    def all_out(self):
+        i = 0
+        for player in self.players:
+            if player == "out":
+                i += 1
+        return i == self.size

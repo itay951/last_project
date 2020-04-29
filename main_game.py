@@ -9,12 +9,12 @@ import time
 board = Board()
 pictures = pictures()
 sprites = []
-sprites.append(Sprite("red", 16, 0, pictures.red))
-sprites.append(Sprite("yellow", 23, 7, pictures.yellow))
-sprites.append(Sprite("green", 9, 24, pictures.green))
-sprites.append(Sprite("purple", 0, 5, pictures.purple))
-sprites.append(Sprite("blue", 0, 18, pictures.blue))
-sprites.append(Sprite("white", 14, 24, pictures.white))
+sprites.append(Sprite("Miss Scarlett", 16, 0, pictures.red))
+sprites.append(Sprite("Colonel Mustard", 23, 7, pictures.yellow))
+sprites.append(Sprite("Rev. Green", 9, 24, pictures.green))
+sprites.append(Sprite("Professor Plum", 0, 5, pictures.purple))
+sprites.append(Sprite("Mrs. Peacock", 0, 18, pictures.blue))
+sprites.append(Sprite("Mrs. White", 14, 24, pictures.white))
 sprites.append(Sprite("dagger", 21, 1, pictures.dagger))
 sprites.append(Sprite("rope", 21, 10, pictures.rope))
 sprites.append(Sprite("candlestick", 1, 1, pictures.candlestick))
@@ -27,153 +27,30 @@ my_character = None
 
 def make_cards(massage):
     for i in range(len(massage)):
-        if massage[i] == "Miss Scarlett":
-            if i < 4:
-                my_cards.append(Sprite(massage[i], 670 + 135 * i, 35, pictures.miss_scarlet_card))
-            elif i == 4:
-                my_cards.append(Sprite(massage[i], 670, 210, pictures.miss_scarlet_card))
-            elif i == 5:
-                my_cards.append(Sprite(massage[i], 1075, 210, pictures.miss_scarlet_card))
-        elif massage[i] == "Rev. Green":
-            if i < 4:
-                my_cards.append(Sprite(massage[i], 670 + 135 * i, 35, pictures.rev_green_card))
-            elif i == 4:
-                my_cards.append(Sprite(massage[i], 670, 210, pictures.rev_green_card))
-            elif i == 5:
-                my_cards.append(Sprite(massage[i], 1075, 210, pictures.rev_green_card))
-        elif massage[i] == "Colonel Mustard":
-            if i < 4:
-                my_cards.append(Sprite(massage[i], 670 + 135 * i, 35, pictures.col_mustard_card))
-            elif i == 4:
-                my_cards.append(Sprite(massage[i], 670, 210, pictures.col_mustard_card))
-            elif i == 5:
-                my_cards.append(Sprite(massage[i], 1075, 210, pictures.col_mustard_card))
-        elif massage[i] == "Mrs. Peacock":
-            if i < 4:
-                my_cards.append(Sprite(massage[i], 670 + 135 * i, 35, pictures.mrs_peacock_card))
-            elif i == 4:
-                my_cards.append(Sprite(massage[i], 670, 210, pictures.mrs_peacock_card))
-            elif i == 5:
-                my_cards.append(Sprite(massage[i], 1075, 210, pictures.mrs_peacock_card))
-        elif massage[i] == "Professor Plum":
-            if i < 4:
-                my_cards.append(Sprite(massage[i], 670 + 135 * i, 35, pictures.professor_plum_card))
-            elif i == 4:
-                my_cards.append(Sprite(massage[i], 670, 210, pictures.professor_plum_card))
-            elif i == 5:
-                my_cards.append(Sprite(massage[i], 1075, 210, pictures.professor_plum_card))
-        elif massage[i] == "Mrs. White":
-            if i < 4:
-                my_cards.append(Sprite(massage[i], 670 + 135 * i, 35, pictures.mrs_white_card))
-            elif i == 4:
-                my_cards.append(Sprite(massage[i], 670, 210, pictures.mrs_white_card))
-            elif i == 5:
-                my_cards.append(Sprite(massage[i], 1075, 210, pictures.mrs_white_card))
-        elif massage[i] == "dagger":
-            if i < 4:
-                my_cards.append(Sprite(massage[i], 670 + 135 * i, 35, pictures.dagger_card))
-            elif i == 4:
-                my_cards.append(Sprite(massage[i], 670, 210, pictures.dagger_card))
-            elif i == 5:
-                my_cards.append(Sprite(massage[i], 1075, 210, pictures.dagger_card))
-        elif massage[i] == "lead pipe":
-            if i < 4:
-                my_cards.append(Sprite(massage[i], 670 + 135 * i, 35, pictures.lead_pipe_card))
-            elif i == 4:
-                my_cards.append(Sprite(massage[i], 670, 210, pictures.lead_pipe_card))
-            elif i == 5:
-                my_cards.append(Sprite(massage[i], 1075, 210, pictures.lead_pipe_card))
-        elif massage[i] == "candlestick":
-            if i < 4:
-                my_cards.append(Sprite(massage[i], 670 + 135 * i, 35, pictures.candlestick_card))
-            elif i == 4:
-                my_cards.append(Sprite(massage[i], 670, 210, pictures.candlestick_card))
-            elif i == 5:
-                my_cards.append(Sprite(massage[i], 1075, 210, pictures.candlestick_card))
-        elif massage[i] == "revolver":
-            if i < 4:
-                my_cards.append(Sprite(massage[i], 670 + 135 * i, 35, pictures.gun_card))
-            elif i == 4:
-                my_cards.append(Sprite(massage[i], 670, 210, pictures.gun_card))
-            elif i == 5:
-                my_cards.append(Sprite(massage[i], 1075, 210, pictures.gun_card))
-        elif massage[i] == "rope":
-            if i < 4:
-                my_cards.append(Sprite(massage[i], 670 + 135 * i, 35, pictures.rope_card))
-            elif i == 4:
-                my_cards.append(Sprite(massage[i], 670, 210, pictures.rope_card))
-            elif i == 5:
-                my_cards.append(Sprite(massage[i], 1075, 210, pictures.rope_card))
-        elif massage[i] == "wrench":
-            if i < 4:
-                my_cards.append(Sprite(massage[i], 670 + 135 * i, 35, pictures.wrench_card))
-            elif i == 4:
-                my_cards.append(Sprite(massage[i], 670, 210, pictures.wrench_card))
-            elif i == 5:
-                my_cards.append(Sprite(massage[i], 1075, 210, pictures.wrench_card))
-        elif massage[i] == "study":
-            if i < 4:
-                my_cards.append(Sprite(massage[i], 670 + 135 * i, 35, pictures.study_card))
-            elif i == 4:
-                my_cards.append(Sprite(massage[i], 670, 210, pictures.study_card))
-            elif i == 5:
-                my_cards.append(Sprite(massage[i], 1075, 210, pictures.study_card))
-        elif massage[i] == "library":
-            if i < 4:
-                my_cards.append(Sprite(massage[i], 670 + 135 * i, 35, pictures.library_card))
-            elif i == 4:
-                my_cards.append(Sprite(massage[i], 670, 210, pictures.library_card))
-            elif i == 5:
-                my_cards.append(Sprite(massage[i], 1075, 210, pictures.library_card))
-        elif massage[i] == "billiard room":
-            if i < 4:
-                my_cards.append(Sprite(massage[i], 670 + 135 * i, 35, pictures.billiard_card))
-            elif i == 4:
-                my_cards.append(Sprite(massage[i], 670, 210, pictures.billiard_card))
-            elif i == 5:
-                my_cards.append(Sprite(massage[i], 1075, 210, pictures.billiard_card))
-        elif massage[i] == "conservatory":
-            if i < 4:
-                my_cards.append(Sprite(massage[i], 670 + 135 * i, 35, pictures.conservatory_card))
-            elif i == 4:
-                my_cards.append(Sprite(massage[i], 670, 210, pictures.conservatory_card))
-            elif i == 5:
-                my_cards.append(Sprite(massage[i], 1075, 210, pictures.conservatory_card))
-        elif massage[i] == "hall":
-            if i < 4:
-                my_cards.append(Sprite(massage[i], 670 + 135 * i, 35, pictures.hall_card))
-            elif i == 4:
-                my_cards.append(Sprite(massage[i], 670, 210, pictures.hall_card))
-            elif i == 5:
-                my_cards.append(Sprite(massage[i], 1075, 210, pictures.hall_card))
-        elif massage[i] == "ballroom":
-            if i < 4:
-                my_cards.append(Sprite(massage[i], 670 + 135 * i, 35, pictures.ballroom_card))
-            elif i == 4:
-                my_cards.append(Sprite(massage[i], 670, 210, pictures.ballroom_card))
-            elif i == 5:
-                my_cards.append(Sprite(massage[i], 1075, 210, pictures.ballroom_card))
-        elif massage[i] == "lounge":
-            if i < 4:
-                my_cards.append(Sprite(massage[i], 670 + 135 * i, 35, pictures.lounge_card))
-            elif i == 4:
-                my_cards.append(Sprite(massage[i], 670, 210, pictures.lounge_card))
-            elif i == 5:
-                my_cards.append(Sprite(massage[i], 1075, 210, pictures.lounge_card))
-        elif massage[i] == "dining room":
-            if i < 4:
-                my_cards.append(Sprite(massage[i], 670 + 135 * i, 35, pictures.dining_card))
-            elif i == 4:
-                my_cards.append(Sprite(massage[i], 670, 210, pictures.dining_card))
-            elif i == 5:
-                my_cards.append(Sprite(massage[i], 1075, 210, pictures.dining_card))
-        elif massage[i] == "kitchen":
-            if i < 4:
-                my_cards.append(Sprite(massage[i], 670 + 135 * i, 35, pictures.kitchen_card))
-            elif i == 4:
-                my_cards.append(Sprite(massage[i], 670, 210, pictures.kitchen_card))
-            elif i == 5:
-                my_cards.append(Sprite(massage[i], 1075, 210, pictures.kitchen_card))
+        for room in pictures.rooms_cards:
+            if massage[i] == room[1]:
+                if i < 4:
+                    my_cards.append(Sprite(massage[i], 670 + 135 * i, 35, room[0]))
+                elif i == 4:
+                    my_cards.append(Sprite(massage[i], 670, 210, room[0]))
+                elif i == 5:
+                    my_cards.append(Sprite(massage[i], 1075, 210, room[0]))
+        for character in pictures.characters_cards:
+            if massage[i] == character[1]:
+                if i < 4:
+                    my_cards.append(Sprite(massage[i], 670 + 135 * i, 35, character[0]))
+                elif i == 4:
+                    my_cards.append(Sprite(massage[i], 670, 210, character[0]))
+                elif i == 5:
+                    my_cards.append(Sprite(massage[i], 1075, 210, character[0]))
+        for weapon in pictures.weapons_cards:
+            if massage[i] == weapon[1]:
+                if i < 4:
+                    my_cards.append(Sprite(massage[i], 670 + 135 * i, 35, weapon[0]))
+                elif i == 4:
+                    my_cards.append(Sprite(massage[i], 670, 210, weapon[0]))
+                elif i == 5:
+                    my_cards.append(Sprite(massage[i], 1075, 210, weapon[0]))
 
 
 def get_message(c_s):
@@ -185,29 +62,21 @@ def get_message(c_s):
             return True, False
         else:
             return True, True
-    if mass[0] == "cards":
+    elif mass[0] == "cards":
         mass.pop(0)
         global my_character
         my_character = mass[-1]
-        if my_character == "Miss Scarlett":
-            my_character = sprites[0]
-        elif my_character == "Colonel Mustard":
-            my_character = sprites[1]
-        elif my_character == "Rev. Green":
-            my_character = sprites[2]
-        elif my_character == "Professor Plum":
-            my_character = sprites[3]
-        elif my_character == "Mrs. Peacock":
-            my_character = sprites[4]
-        elif my_character == "Mrs. White":
-            my_character = sprites[5]
+        for k in range(6):
+            if mass[-1] == sprites[k].name:
+                my_character = sprites[k]
         mass.pop(-1)
+        print(mass)
         make_cards(mass)
-    if mass[0] == "names":
+    elif mass[0] == "names":
         mass.pop(0)
         draw_waiting_room(mass, True)
         return False, False
-    if mass[0] == "update":
+    elif mass[0] == "update":
         for sprite in sprites:
             if mass[1] == sprite.name:
                 board.grid[sprite.x][sprite.y].sprite = None
@@ -215,16 +84,106 @@ def get_message(c_s):
                 sprite.y = int(mass[3])
         update()
         draw(board, True, my_cards)
-    if mass[0] == "turn":
-        return True
+    elif mass[0] == "turn":
+        return "u"
+    elif mass[0] == "ask":
+        pictures.screen.fill(pictures.Black)
+        i = 0
+        for card in my_cards:
+            if card.name == mass[1]:
+                pictures.screen.blit(card.img, (200 + 150 * i, 100))
+                i += 1
+            elif card.name == mass[2]:
+                pictures.screen.blit(card.img, (200 + 150 * i, 100))
+                i += 1
+            elif card.name == mass[3]:
+                pictures.screen.blit(card.img, (200 + 150 * i, 100))
+                i += 1
+        pygame.display.flip()
+        mass.pop(0)
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    mouse_x, mouse_y = event.pos
+                    print(event.pos)
+                    if 100 < mouse_y < 275:
+                        for j in range(i):
+                            if 200 + 150*j < mouse_x < 320 + 150*j:
+                                c_s.send(("answer," + mass[j]).encode())
+                                return
+    elif mass[0] == "answer":
+        pictures.screen.fill(pictures.Black)
+        if mass[1] == "no":
+            answer = pictures.font2.render("no opponent has these cards", True, pictures.Black, pictures.White)
+            pictures.screen.blit(answer, (450, 50))
+        else:
+            for room in pictures.rooms_cards:
+                if mass[1] == room[0]:
+                    pictures.screen.blit(room[1], (500, 200))
+                    pygame.display.flip()
+                    time.sleep(2)
+            for character in pictures.characters_cards:
+                if mass[1] == character[0]:
+                    pictures.screen.blit(character[1], (500, 200))
+                    pygame.display.flip()
+                    time.sleep(2)
+            for weapon in pictures.weapons_cards:
+                if mass[1] == weapon[0]:
+                    pictures.screen.blit(weapon[1], (500, 200))
+                    pygame.display.flip()
+                    time.sleep(2)
+    elif mass[0] == "game over":
+        if mass[1] == "yes":
+            pictures.screen.fill(pictures.Black)
+            massage = pictures.font2.render("you won", True, pictures.Black, pictures.White)
+            pictures.screen.blit(massage, (100, 50))
+            for room in pictures.rooms_cards:
+                if mass[2] == room[0]:
+                    pictures.screen.blit(room[1], (300, 200))
+                    pygame.display.flip()
+            for character in pictures.characters_cards:
+                if mass[3] == character[0]:
+                    pictures.screen.blit(character[1], (400, 200))
+                    pygame.display.flip()
+            for weapon in pictures.weapons_cards:
+                if mass[4] == weapon[0]:
+                    pictures.screen.blit(weapon[1], (500, 200))
+                    pygame.display.flip()
+        elif mass[1] == "no":
+            pictures.screen.fill(pictures.Black)
+            massage = pictures.font2.render("you lost", True, pictures.Black, pictures.White)
+            pictures.screen.blit(massage, (100, 50))
+            pygame.display.flip()
+            return
+        else:
+            pictures.screen.fill(pictures.Black)
+            massage = pictures.font2.render(mass[1]+" won", True, pictures.Black, pictures.White)
+            pictures.screen.blit(massage, (100, 50))
+            for room in pictures.rooms_cards:
+                if mass[2] == room[0]:
+                    pictures.screen.blit(room[1], (300, 200))
+                    pygame.display.flip()
+            for character in pictures.characters_cards:
+                if mass[3] == character[0]:
+                    pictures.screen.blit(character[1], (400, 200))
+                    pygame.display.flip()
+            for weapon in pictures.weapons_cards:
+                if mass[4] == weapon[0]:
+                    pictures.screen.blit(weapon[1], (500, 200))
+                    pygame.display.flip()
+            return "lose"
 
 
-def ask():
-    pass
+def ask(room, soc):
+    sus, wea = draw_ask_lists()
+    soc.send(("ask," + room + "," + sus + "," + wea).encode())
+    get_message(soc)
 
 
-def accuse():
-    pass
+def accuse(room, soc):
+    sus, wea = draw_ask_lists()
+    soc.send(("accuse," + room + "," + sus + "," + wea).encode())
+    get_message(soc)
 
 
 def update():
@@ -241,11 +200,6 @@ def move(deck):
     returned = board.roll(my_character, rand3, deck, my_cards)
     if returned:
         return False
-    """for i in range(board.grid_size_x):
-        for j in range(board.grid_size_y):
-            if board.grid[i][j].sprite is red.img:
-                red.x = i
-                red.y = j"""
     return True
 
 
@@ -256,14 +210,17 @@ def main():
     wait = False
     game = True
     played = False
+    end = False
     draw_waiting_room()
     while lobby:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 lobby = False
+                game = False
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     lobby = False
+                    game = False
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_x, mouse_y = event.pos
                 if 100 < mouse_y < 200:
@@ -356,34 +313,46 @@ def main():
                             pictures.screen.fill(pictures.Black)
                         if (pictures.accuse_button_pos[0] + 200 >= mouse_x >= pictures.accuse_button_pos[0]) and \
                                 (pictures.accuse_button_pos[1] + 35 >= mouse_y >= pictures.accuse_button_pos[1]):
-                            accuse()
-                            played = True
-                            update()
-                            draw(board, deck_up, my_cards)
-                            client_socket.send(("update," + my_character.name + "," + str(my_character.x) + "," + str(my_character.y)).encode())
-                            time.sleep(1)
-                            client_socket.send("end".encode())
+                            if board.grid[my_character.x][my_character.y].ident == "room":
+                                accuse(board.grid[my_character.x][my_character.y].room_name, client_socket)
+                                update()
+                                client_socket.send("end".encode())
+                                game = False
+                                end = True
                         if (pictures.question_button_pos[0] + 200 >= mouse_x >= pictures.question_button_pos[0]) and \
                                 (pictures.question_button_pos[1] + 35 >= mouse_y >= pictures.question_button_pos[1]):
-                            ask()
-                            played = True
-                            update()
-                            draw(board, deck_up, my_cards)
-                            client_socket.send(("update," + my_character.name + "," + str(my_character.x) + "," + str(my_character.y)).encode())
-                            time.sleep(1)
-                            client_socket.send("end".encode())
+                            if board.grid[my_character.x][my_character.y].ident == "room":
+                                ask(board.grid[my_character.x][my_character.y].room_name, client_socket)
+                                played = True
+                                update()
+                                draw(board, deck_up, my_cards)
+                                client_socket.send(("update," + my_character.name + "," + str(my_character.x) + "," + str(my_character.y)).encode())
+                                time.sleep(1)
+                                client_socket.send("end".encode())
                         if (pictures.lists_button_pos[0] + 75 >= mouse_x >= pictures.lists_button_pos[0]) and \
                                 (pictures.lists_button_pos[1] + 35 >= mouse_y >= pictures.lists_button_pos[1]):
                             deck_up = False
                             draw(board, deck_up, my_cards)
         if played:
             turn = get_message(client_socket)
-            if turn:
+            if turn == "lose":
+                game = False
+                end = True
+            elif turn == "u":
                 played = False
 
         # except:
             # print("got shut down")
+            # client_socket.close()
             # break
+    client_socket.close()
+    while end:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                print("end")
+                end = False
+    # accuse
+    # ask
 
 
 if __name__ == '__main__':

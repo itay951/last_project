@@ -48,7 +48,7 @@ class Board:
                     self.grid[i][j].ident = "wall"
                 if 13 <= j <= 15 and 1 <= i <= 4:
                     self.grid[i][j].ident = "room"
-                    self.grid[i][j].room_name = "billiard"
+                    self.grid[i][j].room_name = "billiard room"
                 if i == 1 and j == 12:
                     self.grid[i][j].ident = "door"
                     self.grid[i][j].door_exit = "up"
@@ -116,7 +116,7 @@ class Board:
                     self.grid[i][j].ident = "wall"
                 if 17 <= i <= 21 and 10 <= j <= 13:
                     self.grid[i][j].ident = "room"
-                    self.grid[i][j].room_name = "dining"
+                    self.grid[i][j].room_name = "dining room"
                 if i == 17 and j == 9:
                     self.grid[i][j].ident = "door"
                     self.grid[i][j].door_exit = "up"

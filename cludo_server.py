@@ -55,42 +55,61 @@ def send_messages(wlist):
                         if player != "out":
                             if player is not c_s:
                                 player.send(data.encode())
+                                time.sleep(1)
                 if data[0] == "ask":
-                    for i in range(len(party.player_cards)):
-                        if party.players[i] is not c_s:
-                            if data[1] in party.player_cards[i] or data[2] in party.player_cards[i] or data[3] in party.player_cards[i]:
-                                if party.players[i] != "out":
+                    for i in range(1, len(party.player_cards)):
+                        if i + party.turn >= party.size:
+                            i -= party.size
+                        if party.players[party.turn + i] is not c_s:
+                            name = party.player_cards[party.turn + i][-1]
+                            party.player_cards[party.turn + i].pop(-1)
+                            if data[1] in party.player_cards[party.turn + i] or data[2] in party.player_cards[party.turn + i] or data[3] in party.player_cards[party.turn + i]:
+                                if party.players[party.turn + i] != "out":
                                     data = ",".join(data)
-                                    party.players[i].send(data.encode())
-                                    data = party.players[i].recv(1024)  # if something doesnt work in ask check here
-                                    c_s.send(data)
+                                    party.players[party.turn+i].send(data.encode())
+                                    break
                                 else:
-                                    if data[1] in party.player_cards[i]:
-                                        c_s.send(data[1].encode())
-                                    elif data[2] in party.player_cards[i]:
-                                        c_s.send(data[2].encode())
-                                    elif data[3] in party.player_cards[i]:
-                                        c_s.send(data[3].encode())
+                                    if data[1] in party.player_cards[party.turn + i]:
+                                        c_s.send(("answer,"+data[1]).encode())
+                                        break
+                                    elif data[2] in party.player_cards[party.turn + i]:
+                                        c_s.send(("answer,"+data[2]).encode())
+                                        break
+                                    elif data[3] in party.player_cards[party.turn + i]:
+                                        c_s.send(("answer,"+data[3]).encode())
+                                        break
+                            party.player_cards[party.turn + i].append(name)
+                        else:
+                            c_s.send("answer,no".encode())
                 if data[0] == "accuse":
                     if data[1] in party.killer and data[2] in party.killer and data[3] in party.killer:
+                        data.pop(0)
+                        data = ",".join(data)
                         for player in party.players:
                             if c_s is player:
-                                c_s.send("you won".encode())
+                                c_s.send(("game over,yes," + data).encode())
                             else:
-                                data = ",".join(data)
-                                player.send((party.player_cards[party.turn+1][-1] + " won," + data).encode())
+                                player.send(("game over," + party.player_cards[party.turn][-1] + "," + data).encode())
                     else:
                         for player in party.players:
                             if c_s is player:
-                                c_s.send("you lost".encode())
-                            else:
-                                player.send((party.player_cards[party.turn+1][-1] + "accused and was wrong").encode())
-                        party.remove(c_s)
+                                party.remove(player)
+                                c_s.send("game over,no".encode())
+                                if party.all_out():
+                                    parties.remove(party)
+                                    return
+                print(data[0])
+                if data[0] == "answer":
+                    data = ",".join(data)
+                    party.players[party.turn].send(data.encode())
                 if data[0] == "end":
                     party.next_turn()
-                    for player in party.players:
-                        if player is party.players[party.turn]:
+                    while True:
+                        if party.players[party.turn] != "out":
                             party.players[party.turn].send("turn".encode())
+                            break
+                        else:
+                            party.next_turn()
 
         m_t_s.remove(massage)
 
