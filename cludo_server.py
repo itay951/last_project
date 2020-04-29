@@ -99,27 +99,26 @@ def send_messages(wlist):
                                 party.remove(player)
                                 o_c_s.remove(player)
                                 c_s.send("game over,no".encode())
-                                if party.all_out():
-                                    parties.remove(party)
-                                    return
-                print(data[0])
+                        if party.all_out():
+                            for player in party.players:
+                                if player != "out":
+                                    player.send("all out".encode())
+                            parties.remove(party)
+                            return
+
                 if data[0] == "answer":
                     data = ",".join(data)
                     party.players[party.turn].send(data.encode())
                 if data[0] == "end":
                     party.next_turn()
+                    print(data[0])
                     while True:
                         if party.players[party.turn] != "out":
+                            party.players[party.turn].send("turn".encode())
                             break
                         else:
                             party.next_turn()
-                    for player in party.players:
-                        if party.players[party.turn] == "out":
-                            continue
-                        if party.players[party.turn] == player:
-                            player.send("turn".encode())
-                        else:
-                            player.send(("turn,"+party.player_cards[party.turn][-1]).encode())
+
         m_t_s.remove(massage)
 
 
@@ -144,6 +143,11 @@ def main():
                             for player in party.players:
                                 if cu_s == player:
                                     party.remove(player)
+                            if party.all_out():
+                                for player in party.players:
+                                    if player != "out":
+                                        player.send("all out".encode())
+                            parties.remove(party)
                 send_messages(wlist)
 
 
