@@ -87,29 +87,39 @@ def get_message(c_s):
     elif mass[0] == "turn":
         return "u"
     elif mass[0] == "ask":
-        pictures.screen.fill(pictures.Black)
-        i = 0
-        for card in my_cards:
-            if card.name == mass[1]:
-                pictures.screen.blit(card.img, (200 + 150 * i, 100))
-                i += 1
-            elif card.name == mass[2]:
-                pictures.screen.blit(card.img, (200 + 150 * i, 100))
-                i += 1
-            elif card.name == mass[3]:
-                pictures.screen.blit(card.img, (200 + 150 * i, 100))
-                i += 1
-        pygame.display.flip()
         mass.pop(0)
+        pictures.screen.fill(pictures.Black)
+        has_room = False
+        has_sus = False
+        has_wea = False
+        for card in my_cards:
+            if card.name == mass[0]:
+                pictures.screen.blit(card.img, (200, 100))
+                has_room = True
+            elif card.name == mass[1]:
+                pictures.screen.blit(card.img, (350, 100))
+                has_sus = True
+            elif card.name == mass[2]:
+                pictures.screen.blit(card.img, (500, 100))
+                has_wea = True
+        pygame.display.flip()
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     mouse_x, mouse_y = event.pos
                     print(event.pos)
                     if 100 < mouse_y < 275:
-                        for j in range(i):
-                            if 200 + 150*j < mouse_x < 320 + 150*j:
-                                c_s.send(("answer," + mass[j]).encode())
+                        if has_room:
+                            if 200 < mouse_x < 320:
+                                c_s.send(("answer," + mass[0]).encode())
+                                return
+                        if has_sus:
+                            if 350 < mouse_x < 470:
+                                c_s.send(("answer," + mass[0]).encode())
+                                return
+                        if has_wea:
+                            if 500 < mouse_x < 620:
+                                c_s.send(("answer," + mass[0]).encode())
                                 return
     elif mass[0] == "answer":
         pictures.screen.fill(pictures.Black)
@@ -118,18 +128,18 @@ def get_message(c_s):
             pictures.screen.blit(answer, (450, 50))
         else:
             for room in pictures.rooms_cards:
-                if mass[1] == room[0]:
-                    pictures.screen.blit(room[1], (500, 200))
+                if mass[1] == room[1]:
+                    pictures.screen.blit(room[0], (500, 200))
                     pygame.display.flip()
                     time.sleep(2)
             for character in pictures.characters_cards:
-                if mass[1] == character[0]:
-                    pictures.screen.blit(character[1], (500, 200))
+                if mass[1] == character[1]:
+                    pictures.screen.blit(character[0], (500, 200))
                     pygame.display.flip()
                     time.sleep(2)
             for weapon in pictures.weapons_cards:
-                if mass[1] == weapon[0]:
-                    pictures.screen.blit(weapon[1], (500, 200))
+                if mass[1] == weapon[1]:
+                    pictures.screen.blit(weapon[0], (500, 200))
                     pygame.display.flip()
                     time.sleep(2)
     elif mass[0] == "game over":
