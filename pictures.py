@@ -22,6 +22,9 @@ class pictures:
     pygame.display.set_caption("cluedo")
     screen.fill(Black)
 
+    bg = pygame.image.load("game_pieces/first_page_b_g.jpg")
+    bg = pygame.transform.rotozoom(bg, 0, 2)
+
     # game pieces
     empty = pygame.image.load("game_pieces/empty.png")
     grey = pygame.image.load("game_pieces/grey_block.png")
