@@ -85,7 +85,15 @@ def get_message(c_s):
         update()
         draw(board, True, my_cards)
     elif mass[0] == "turn":
-        return "u"
+        if len(mass) > 1:
+            tu = pictures.font.render(mass[1]+"'s turn", True, pictures.Black, pictures.White)
+            pictures.screen.blit(tu, (830, 300))
+            pygame.display.update()
+        else:
+            tu = pictures.font.render("your turn", True, pictures.Black, pictures.White)
+            pictures.screen.blit(tu, (830, 300))
+            pygame.display.update()
+            return "u"
     elif mass[0] == "ask":
         mass.pop(0)
         pictures.screen.fill(pictures.Black)
@@ -96,10 +104,10 @@ def get_message(c_s):
             if card.name == mass[0]:
                 pictures.screen.blit(card.img, (200, 100))
                 has_room = True
-            elif card.name == mass[1]:
+            if card.name == mass[1]:
                 pictures.screen.blit(card.img, (350, 100))
                 has_sus = True
-            elif card.name == mass[2]:
+            if card.name == mass[2]:
                 pictures.screen.blit(card.img, (500, 100))
                 has_wea = True
         pygame.display.flip()
@@ -115,11 +123,11 @@ def get_message(c_s):
                                 return
                         if has_sus:
                             if 350 < mouse_x < 470:
-                                c_s.send(("answer," + mass[0]).encode())
+                                c_s.send(("answer," + mass[1]).encode())
                                 return
                         if has_wea:
                             if 500 < mouse_x < 620:
-                                c_s.send(("answer," + mass[0]).encode())
+                                c_s.send(("answer," + mass[2]).encode())
                                 return
     elif mass[0] == "answer":
         pictures.screen.fill(pictures.Black)
@@ -147,17 +155,23 @@ def get_message(c_s):
             pictures.screen.fill(pictures.Black)
             massage = pictures.font2.render("you won", True, pictures.Black, pictures.White)
             pictures.screen.blit(massage, (100, 50))
+            d_b = pictures.font2.render("Dr. Black was killed in the:", True, pictures.Black, pictures.White)
+            pictures.screen.blit(d_b, (50, 285))
             for room in pictures.rooms_cards:
-                if mass[2] == room[0]:
-                    pictures.screen.blit(room[1], (300, 200))
+                if mass[2] == room[1]:
+                    pictures.screen.blit(room[0], (300, 200))
                     pygame.display.flip()
             for character in pictures.characters_cards:
-                if mass[3] == character[0]:
-                    pictures.screen.blit(character[1], (400, 200))
+                if mass[3] == character[1]:
+                    mas = pictures.font2.render("by:", True, pictures.Black, pictures.White)
+                    pictures.screen.blit(mas, (450, 285))
+                    pictures.screen.blit(character[0], (500, 200))
                     pygame.display.flip()
             for weapon in pictures.weapons_cards:
-                if mass[4] == weapon[0]:
-                    pictures.screen.blit(weapon[1], (500, 200))
+                if mass[4] == weapon[1]:
+                    mas = pictures.font2.render("with a:", True, pictures.Black, pictures.White)
+                    pictures.screen.blit(mas, (650, 285))
+                    pictures.screen.blit(weapon[0], (700, 200))
                     pygame.display.flip()
         elif mass[1] == "no":
             pictures.screen.fill(pictures.Black)
@@ -169,17 +183,23 @@ def get_message(c_s):
             pictures.screen.fill(pictures.Black)
             massage = pictures.font2.render(mass[1]+" won", True, pictures.Black, pictures.White)
             pictures.screen.blit(massage, (100, 50))
+            d_b = pictures.font2.render("Dr. Black was killed in the:", True, pictures.Black, pictures.White)
+            pictures.screen.blit(d_b, (50, 285))
             for room in pictures.rooms_cards:
-                if mass[2] == room[0]:
-                    pictures.screen.blit(room[1], (300, 200))
+                if mass[2] == room[1]:
+                    pictures.screen.blit(room[0], (300, 200))
                     pygame.display.flip()
             for character in pictures.characters_cards:
-                if mass[3] == character[0]:
-                    pictures.screen.blit(character[1], (400, 200))
+                if mass[3] == character[1]:
+                    mas = pictures.font2.render("by:", True, pictures.Black, pictures.White)
+                    pictures.screen.blit(mas, (450, 285))
+                    pictures.screen.blit(character[0], (500, 200))
                     pygame.display.flip()
             for weapon in pictures.weapons_cards:
-                if mass[4] == weapon[0]:
-                    pictures.screen.blit(weapon[1], (500, 200))
+                if mass[4] == weapon[1]:
+                    mas = pictures.font2.render("with a:", True, pictures.Black, pictures.White)
+                    pictures.screen.blit(mas, (650, 285))
+                    pictures.screen.blit(weapon[0], (700, 200))
                     pygame.display.flip()
             return "lose"
 
@@ -336,8 +356,6 @@ def main():
                                 played = True
                                 update()
                                 draw(board, deck_up, my_cards)
-                                client_socket.send(("update," + my_character.name + "," + str(my_character.x) + "," + str(my_character.y)).encode())
-                                time.sleep(1)
                                 client_socket.send("end".encode())
                         if (pictures.lists_button_pos[0] + 75 >= mouse_x >= pictures.lists_button_pos[0]) and \
                                 (pictures.lists_button_pos[1] + 35 >= mouse_y >= pictures.lists_button_pos[1]):

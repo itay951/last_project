@@ -31,6 +31,7 @@ class Party:
                     continue
         self.killer = [self.suspects[0], self.weapons[0], self.rooms[0]]
         self.suspects = ["Miss Scarlett", "Rev. Green", "Colonel Mustard", "Mrs. Peacock", "Professor Plum", "Mrs. White"]
+        print(self.killer)
 
     def add(self, player):
         self.players.append(player)
@@ -44,12 +45,11 @@ class Party:
             if self.players[i] is player:
                 if self.full():
                     self.players[i] = "out"
-                    self.size -= 1
                 else:
                     self.suspects.append(self.player_cards[i][-1])
                     self.player_cards[i].pop(-1)
                     self.players.remove(player)
-                self.amount -= 1
+                    self.amount -= 1
 
     def next_turn(self):
         self.turn += 1

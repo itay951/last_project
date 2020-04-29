@@ -90,10 +90,14 @@ def send_messages(wlist):
                                 c_s.send(("game over,yes," + data).encode())
                             else:
                                 player.send(("game over," + party.player_cards[party.turn][-1] + "," + data).encode())
+                            o_c_s.remove(player)
+                        parties.remove(party)
                     else:
                         for player in party.players:
                             if c_s is player:
+                                data[0] = "end"
                                 party.remove(player)
+                                o_c_s.remove(player)
                                 c_s.send("game over,no".encode())
                                 if party.all_out():
                                     parties.remove(party)
@@ -106,11 +110,14 @@ def send_messages(wlist):
                     party.next_turn()
                     while True:
                         if party.players[party.turn] != "out":
-                            party.players[party.turn].send("turn".encode())
                             break
                         else:
                             party.next_turn()
-
+                    for player in party.players:
+                        if party.players[party.turn] == player:
+                            player.send("turn".encode())
+                        else:
+                            player.send(("turn,"+party.player_cards[party.turn][-1]).encode())
         m_t_s.remove(massage)
 
 
