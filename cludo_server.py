@@ -12,8 +12,10 @@ s_s.listen(5)
 
 def send_messages(wlist):
     for massage in m_t_s:
+        print(massage)
         (c_s, data) = massage
         data = data.split(",")
+        print(data)
         for client in wlist:
             if client is c_s:
                 if data[0] == "oppo":
@@ -49,13 +51,13 @@ def send_messages(wlist):
                         c_s.send(("names" + names).encode())
         for party in parties:
             if c_s in party.players:
+                print(data)
                 if data[0] == "update":
                     data = ",".join(data)
                     for player in party.players:
                         if player != "out":
                             if player is not c_s:
                                 player.send(data.encode())
-                                time.sleep(1)
                 if data[0] == "ask":
                     for i in range(1, len(party.player_cards)):
                         if i + party.turn >= party.size:
@@ -89,7 +91,8 @@ def send_messages(wlist):
                             if c_s is player:
                                 c_s.send(("game over,yes," + data).encode())
                             else:
-                                player.send(("game over," + party.player_cards[party.turn][-1] + "," + data).encode())
+                                if player != "out":
+                                    player.send(("game over," + party.player_cards[party.turn][-1] + "," + data).encode())
                             o_c_s.remove(player)
                         parties.remove(party)
                     else:
@@ -131,10 +134,10 @@ def main():
                 o_c_s.append(new_socket)
             else:
                 data = cu_s.recv(1024).decode()
+                print(data)
                 if data:
                     m_t_s.append((cu_s, data))
                 else:
-                    print(data)
                     if len(o_c_s) != 0:
                         for player in o_c_s:
                             if cu_s == player:

@@ -325,7 +325,7 @@ class Board:
             x2 = 3
             y2 = 10
             self.grid[x2][y2].sprite = pictures.red_library_door
-        if self.grid[x][y].room_name == "billiard":
+        if self.grid[x][y].room_name == "billiard room":
             x1 = 1
             y1 = 12
             self.grid[x1][y1].sprite = pictures.blue_billiard_door
@@ -363,7 +363,7 @@ class Board:
             x1 = 17
             y1 = 5
             self.grid[x1][y1].sprite = pictures.lounge_door
-        if self.grid[x][y].room_name == "dining":
+        if self.grid[x][y].room_name == "dining room":
             x1 = 17
             y1 = 9
             self.grid[x1][y1].sprite = pictures.blue_dining_door

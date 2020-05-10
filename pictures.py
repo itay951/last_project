@@ -23,7 +23,7 @@ class pictures:
     screen.fill(Black)
 
     bg = pygame.image.load("game_pieces/first_page_b_g.jpg")
-    bg = pygame.transform.rotozoom(bg, 0, 2)
+    bg = pygame.transform.scale(bg, (screensizex, screensizey))
 
     # game pieces
     empty = pygame.image.load("game_pieces/empty.png")
@@ -221,7 +221,7 @@ class pictures:
                      (candlestick_card, "candlestick"), (rope_card, "rope"),
                      (gun_card, "revolver"), (wrench_card, "wrench")]
     rooms_cards = [(ballroom_card, "ballroom"), (billiard_card, "billiard room"), (conservatory_card, "conservatory"),
-                   (dining_card, "dining_room"), (hall_card, "hall"), (kitchen_card, "kitchen"),
+                   (dining_card, "dining room"), (hall_card, "hall"), (kitchen_card, "kitchen"),
                    (library_card, "library"), (lounge_card, "lounge"), (study_card, "study")]
 
     # cubes

@@ -64,4 +64,4 @@ class Party:
         for player in self.players:
             if player == "out":
                 i += 1
-        return i+1 == self.size
+        return i+1 >= self.size
