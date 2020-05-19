@@ -23,7 +23,7 @@ class pictures:
     screen.fill(Black)
 
     bg = pygame.image.load("game_pieces/first_page_b_g.jpg")
-    bg = pygame.transform.rotozoom(bg, 0, 2)
+    bg = pygame.transform.scale(bg, (screensizex, screensizey))
 
     # game pieces
     empty = pygame.image.load("game_pieces/empty.png")
@@ -199,7 +199,6 @@ class pictures:
     rev_green_card = pygame.image.load("game_pieces/rev_green_card.png")
     rev_green_card = pygame.transform.rotozoom(rev_green_card, 0, 0.25)
 
-
     # weapons
     candlestick_card = pygame.image.load("game_pieces/candlestick_card.png")
     candlestick_card = pygame.transform.rotozoom(candlestick_card, 0, 0.25)
@@ -221,7 +220,7 @@ class pictures:
                      (candlestick_card, "candlestick"), (rope_card, "rope"),
                      (gun_card, "revolver"), (wrench_card, "wrench")]
     rooms_cards = [(ballroom_card, "ballroom"), (billiard_card, "billiard room"), (conservatory_card, "conservatory"),
-                   (dining_card, "dining_room"), (hall_card, "hall"), (kitchen_card, "kitchen"),
+                   (dining_card, "dining room"), (hall_card, "hall"), (kitchen_card, "kitchen"),
                    (library_card, "library"), (lounge_card, "lounge"), (study_card, "study")]
 
     # cubes
@@ -248,6 +247,7 @@ class pictures:
 
 
 def draw(board, deck, cards, ask=True):
+    # output to the screen
     pictures.screen.fill(pictures.Black)
     if ask:
         pictures.screen.blit(pictures.tile, (0, 0))
@@ -324,6 +324,7 @@ def draw_waiting_room(characters=None, waiting=False):
 
 
 def draw_ask_lists():
+    # output to the screen the cards when you choose to ask or accuse
     pictures.screen.fill(pictures.Black)
     chosen_c = ""
     chosen_w = ""

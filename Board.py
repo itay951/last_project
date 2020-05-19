@@ -145,10 +145,8 @@ class Board:
                     self.room(i+1, j-1, self.grid[i][j].room)
 
     def move(self, myself, steps, deck, cards):
+        # a recursive function that checks your movement input and your position and moves your your piece accordingly
         if steps != 0:
-            print(myself.x)
-            print(myself.y)
-            print(steps)
             breaked = False
             if self.grid[myself.x][myself.y].ident != "floor" or \
                     (self.grid[myself.x][myself.y].has_sprite() and self.grid[myself.x][myself.y].sprite is not myself):
@@ -254,6 +252,7 @@ class Board:
                         return
 
     def roll(self, me, rand, deck, cards):
+        # checks if the player in a room and let him to get out and then call move
         if self.grid[me.x][me.y].ident == "room":
             x1, y1, x2, y2, x3, y3, x4, y4 = self.find_door(me.x, me.y)
 
@@ -295,6 +294,7 @@ class Board:
         self.move(me, rand, deck, cards)
 
     def room(self, x, y, arr):
+        # make an array of all the room parts that connect to a specific door
         for i in range(len(arr)):
             if arr[i] is self.grid[x][y]:
                 return
@@ -306,6 +306,7 @@ class Board:
             self.room(x, y-1, arr)
 
     def find_door(self, x, y):
+        # return the doors that are connected to each room
         x1 = 0
         y1 = 0
         x2 = 0
@@ -325,7 +326,7 @@ class Board:
             x2 = 3
             y2 = 10
             self.grid[x2][y2].sprite = pictures.red_library_door
-        if self.grid[x][y].room_name == "billiard":
+        if self.grid[x][y].room_name == "billiard room":
             x1 = 1
             y1 = 12
             self.grid[x1][y1].sprite = pictures.blue_billiard_door
@@ -363,7 +364,7 @@ class Board:
             x1 = 17
             y1 = 5
             self.grid[x1][y1].sprite = pictures.lounge_door
-        if self.grid[x][y].room_name == "dining":
+        if self.grid[x][y].room_name == "dining room":
             x1 = 17
             y1 = 9
             self.grid[x1][y1].sprite = pictures.blue_dining_door

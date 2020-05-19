@@ -5,27 +5,32 @@ from Sprite import *
 import socket
 import time
 
-
+while True:
+    try:
+        client_socket = socket.socket()
+        client_socket.connect(("127.0.0.1", 8006))
+        client_socket.settimeout(0)
+        break
+    except:
+        pass
+PLAYERS_OUT = False
+BEGIN = False
+PLAYED = False
+LOOSE = False
 board = Board()
 pictures = pictures()
-sprites = []
-sprites.append(Sprite("Miss Scarlett", 16, 0, pictures.red))
-sprites.append(Sprite("Colonel Mustard", 23, 7, pictures.yellow))
-sprites.append(Sprite("Rev. Green", 9, 24, pictures.green))
-sprites.append(Sprite("Professor Plum", 0, 5, pictures.purple))
-sprites.append(Sprite("Mrs. Peacock", 0, 18, pictures.blue))
-sprites.append(Sprite("Mrs. White", 14, 24, pictures.white))
-sprites.append(Sprite("dagger", 21, 1, pictures.dagger))
-sprites.append(Sprite("rope", 21, 10, pictures.rope))
-sprites.append(Sprite("candlestick", 1, 1, pictures.candlestick))
-sprites.append(Sprite("gun", 10, 1, pictures.gun))
-sprites.append(Sprite("pipe", 1, 7, pictures.pipe))
-sprites.append(Sprite("wrench", 1, 13, pictures.wrench))
+sprites = [Sprite("Miss Scarlett", 16, 0, pictures.red), Sprite("Colonel Mustard", 23, 7, pictures.yellow),
+           Sprite("Rev. Green", 9, 24, pictures.green), Sprite("Professor Plum", 0, 5, pictures.purple),
+           Sprite("Mrs. Peacock", 0, 18, pictures.blue), Sprite("Mrs. White", 14, 24, pictures.white),
+           Sprite("dagger", 21, 1, pictures.dagger), Sprite("rope", 21, 10, pictures.rope),
+           Sprite("candlestick", 1, 1, pictures.candlestick), Sprite("gun", 10, 1, pictures.gun),
+           Sprite("pipe", 1, 7, pictures.pipe), Sprite("wrench", 1, 13, pictures.wrench)]
 my_cards = []
 my_character = None
 
 
 def make_cards(massage):
+    # receives a list of names of the cards that the player has and makes a list of images of the cards the player have
     for i in range(len(massage)):
         for room in pictures.rooms_cards:
             if massage[i] == room[1]:
@@ -53,35 +58,42 @@ def make_cards(massage):
                     my_cards.append(Sprite(massage[i], 1075, 210, weapon[0]))
 
 
-def get_message(c_s):
-    mass = c_s.recv(1024).decode()
-    print(mass)
+def get_message():
+    # tries to get a message from the server and if it gets a message it checks what it says and doing things accordingly
+    global PLAYED, PLAYERS_OUT, BEGIN, LOOSE, my_character, client_socket
+    try:
+        mass = client_socket.recv(1024).decode()
+    except:
+        return
     mass = mass.split(",")
     if mass[0] == "all out":
         pictures.screen.fill(pictures.Black)
         left = pictures.font2.render("rest of the players got out", True, pictures.Black, pictures.White)
         pictures.screen.blit(left, (200, 100))
         pygame.display.flip()
-        return "out"
+        PLAYERS_OUT = True
+        return
     if mass[0] == "start":
         if mass[1] == "yes":
-            return True, False
+            BEGIN = True
+            PLAYED = False
+            return
         else:
-            return True, True
+            BEGIN = True
+            PLAYED = True
+            return
     elif mass[0] == "cards":
         mass.pop(0)
-        global my_character
         my_character = mass[-1]
         for k in range(6):
             if mass[-1] == sprites[k].name:
                 my_character = sprites[k]
         mass.pop(-1)
-        print(mass)
         make_cards(mass)
     elif mass[0] == "names":
         mass.pop(0)
         draw_waiting_room(mass, True)
-        return False, False
+        return
     elif mass[0] == "update":
         for sprite in sprites:
             if mass[1] == sprite.name:
@@ -91,7 +103,8 @@ def get_message(c_s):
         update()
         draw(board, True, my_cards)
     elif mass[0] == "turn":
-        return "u"
+        PLAYED = False
+        return
     elif mass[0] == "ask":
         mass.pop(0)
         pictures.screen.fill(pictures.Black)
@@ -113,25 +126,25 @@ def get_message(c_s):
             for event in pygame.event.get():
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     mouse_x, mouse_y = event.pos
-                    print(event.pos)
                     if 100 < mouse_y < 275:
                         if has_room:
                             if 200 < mouse_x < 320:
-                                c_s.send(("answer," + mass[0]).encode())
+                                client_socket.send(("answer," + mass[0]).encode())
                                 return
                         if has_sus:
                             if 350 < mouse_x < 470:
-                                c_s.send(("answer," + mass[1]).encode())
+                                client_socket.send(("answer," + mass[1]).encode())
                                 return
                         if has_wea:
                             if 500 < mouse_x < 620:
-                                c_s.send(("answer," + mass[2]).encode())
+                                client_socket.send(("answer," + mass[2]).encode())
                                 return
     elif mass[0] == "answer":
         pictures.screen.fill(pictures.Black)
         if mass[1] == "no":
             answer = pictures.font2.render("no opponent has these cards", True, pictures.Black, pictures.White)
             pictures.screen.blit(answer, (450, 50))
+            pygame.display.flip()
         else:
             for room in pictures.rooms_cards:
                 if mass[1] == room[1]:
@@ -168,8 +181,8 @@ def get_message(c_s):
             for weapon in pictures.weapons_cards:
                 if mass[4] == weapon[1]:
                     mas = pictures.font2.render("with a:", True, pictures.Black, pictures.White)
-                    pictures.screen.blit(mas, (880, 285))
-                    pictures.screen.blit(weapon[0], (900, 200))
+                    pictures.screen.blit(mas, (840, 285))
+                    pictures.screen.blit(weapon[0], (950, 200))
                     pygame.display.flip()
         elif mass[1] == "no":
             pictures.screen.fill(pictures.Black)
@@ -185,60 +198,66 @@ def get_message(c_s):
             pictures.screen.blit(d_b, (50, 285))
             for room in pictures.rooms_cards:
                 if mass[2] == room[1]:
-                    pictures.screen.blit(room[0], (300, 200))
+                    pictures.screen.blit(room[0], (500, 200))
                     pygame.display.flip()
             for character in pictures.characters_cards:
                 if mass[3] == character[1]:
                     mas = pictures.font2.render("by:", True, pictures.Black, pictures.White)
-                    pictures.screen.blit(mas, (450, 285))
-                    pictures.screen.blit(character[0], (500, 200))
+                    pictures.screen.blit(mas, (650, 285))
+                    pictures.screen.blit(character[0], (700, 200))
                     pygame.display.flip()
             for weapon in pictures.weapons_cards:
                 if mass[4] == weapon[1]:
                     mas = pictures.font2.render("with a:", True, pictures.Black, pictures.White)
-                    pictures.screen.blit(mas, (650, 285))
-                    pictures.screen.blit(weapon[0], (700, 200))
+                    pictures.screen.blit(mas, (840, 285))
+                    pictures.screen.blit(weapon[0], (950, 200))
                     pygame.display.flip()
-            return "lose"
+            LOOSE = True
+            return
 
 
-def ask(room, soc):
+def ask(room):
+    # gets what the player wants to ask about and sends it to the server
+    global client_socket
     sus, wea = draw_ask_lists()
-    soc.send(("ask," + room + "," + sus + "," + wea).encode())
-    o = get_message(soc)
-    if o == "out":
-        return o
+    client_socket.send(("ask," + room + "," + sus + "," + wea).encode())
+    get_message()
 
-def accuse(room, soc):
+
+def accuse(room):
+    # gets what the player wants to accuse at and sends it to the server
+    global client_socket
     sus, wea = draw_ask_lists()
-    soc.send(("accuse," + room + "," + sus + "," + wea).encode())
-    o = get_message(soc)
-    if o == "out":
-        return o
+    client_socket.send(("accuse," + room + "," + sus + "," + wea).encode())
+    get_message()
 
 
 def update():
+    # update the places of the players
     for sprite in sprites:
         board.grid[sprite.x][sprite.y].sprite = sprite.img
 
 
 def move(deck):
+    # generates two random numbers as the cubes and call the roll function
     rand = random.randint(1, 6)
     rand2 = random.randint(1, 6)
     draw_cube(rand, rand2)
     pygame.display.update()
     rand3 = rand + rand2
     returned = board.roll(my_character, rand3, deck, my_cards)
+    update()
     if returned:
         return False
     return True
 
 
 def main():
-    lobby = True
+    global PLAYED, BEGIN, PLAYERS_OUT, LOOSE, client_socket
+    lobby = False
     wait = False
-    game = True
-    played = False
+    game = False
+    PLAYED = False
     end = False
     first = True
     while first:
@@ -247,26 +266,22 @@ def main():
                 return
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_x, mouse_y = event.pos
-                print(event.pos)
                 if 400 < mouse_y < 500:
                     if 100 < mouse_x < 620:
                         first = False
+                        lobby = True
         button = pictures.font3.render("start game", True, pictures.Black, pictures.White)
         pictures.screen.blit(pictures.bg, (0, 0))
         pictures.screen.blit(button, (100, 400))
         pygame.display.flip()
-    client_socket = socket.socket()
-    client_socket.connect(("127.0.0.1", 8006))
     draw_waiting_room()
     while lobby:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 lobby = False
-                game = False
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     lobby = False
-                    game = False
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_x, mouse_y = event.pos
                 if 100 < mouse_y < 200:
@@ -274,6 +289,7 @@ def main():
                         client_socket.send(("oppo," + str(3)).encode())
                         lobby = False
                         wait = True
+                        get_message()
                     if 550 < mouse_x < 600:
                         client_socket.send(("oppo," + str(4)).encode())
                         lobby = False
@@ -287,22 +303,21 @@ def main():
                         lobby = False
                         wait = True
 
-                o = get_message(client_socket)
-                if o == "out":
-                    lobby = False
-                    game = False
+                    if PLAYERS_OUT:
+                        lobby = False
+                        game = False
     while wait:
+        get_message()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 wait = False
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     wait = False
-        begin, played = get_message(client_socket)
-        if begin == "out":
+        if PLAYERS_OUT:
             game = False
             wait = False
-        if begin:
+        if BEGIN:
             game = True
             wait = False
 
@@ -314,11 +329,19 @@ def main():
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     game = False
+                    client_socket.send("end".encode())
+                    break
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         game = False
+                        client_socket.send("end".encode())
+                        break
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     mouse_x, mouse_y = event.pos
+                    if (pictures.lists_button_pos[0] + 75 >= mouse_x >= pictures.lists_button_pos[0]) and \
+                            (pictures.lists_button_pos[1] + 35 >= mouse_y >= pictures.lists_button_pos[1]):
+                        deck_up = False
+                        draw(board, deck_up, my_cards)
                     for i in range(3):
                         for j in range(3):
                             if pictures.rooms[i][j].x <= mouse_x <= pictures.rooms[i][j].x + 80 and \
@@ -344,12 +367,12 @@ def main():
                                         pictures.suspects[i][j].img = red_x
                             except:
                                 pass
-                    if not played:
+                    if not PLAYED:
                         if event.button == 1:
                             if (pictures.roll_button_pos[0] <= mouse_x <= pictures.roll_button_pos[0] + 50) and \
                                     (pictures.roll_button_pos[1] <= mouse_y <= pictures.roll_button_pos[1] + 35):
                                 game = move(deck_up)
-                                played = True
+                                PLAYED = True
                                 for sprite in sprites:
                                     if sprite.name == my_character.name:
                                         sprite.x = my_character.x
@@ -366,43 +389,52 @@ def main():
                             if (pictures.accuse_button_pos[0] + 200 >= mouse_x >= pictures.accuse_button_pos[0]) and \
                                     (pictures.accuse_button_pos[1] + 35 >= mouse_y >= pictures.accuse_button_pos[1]):
                                 if board.grid[my_character.x][my_character.y].ident == "room":
-                                    accuse(board.grid[my_character.x][my_character.y].room_name, client_socket)
-                                    update()
-                                    client_socket.send("end".encode())
+                                    accuse(board.grid[my_character.x][my_character.y].room_name)
+                                    if PLAYERS_OUT:
+                                        pictures.screen.fill(pictures.Black)
+                                        mas = pictures.font2.render("all other players left game", True, pictures.Black, pictures.White)
+                                        pictures.screen.blit(mas, (450, 50))
+                                        pygame.display.flip()
+                                    else:
+                                        client_socket.send("end".encode())
                                     game = False
                                     end = True
                             if (pictures.question_button_pos[0] + 200 >= mouse_x >= pictures.question_button_pos[0]) and \
                                     (pictures.question_button_pos[1] + 35 >= mouse_y >= pictures.question_button_pos[1]):
                                 if board.grid[my_character.x][my_character.y].ident == "room":
-                                    ask(board.grid[my_character.x][my_character.y].room_name, client_socket)
-                                    played = True
-                                    update()
-                                    draw(board, deck_up, my_cards)
-                                    client_socket.send("end".encode())
-                            if (pictures.lists_button_pos[0] + 75 >= mouse_x >= pictures.lists_button_pos[0]) and \
-                                    (pictures.lists_button_pos[1] + 35 >= mouse_y >= pictures.lists_button_pos[1]):
-                                deck_up = False
-                                draw(board, deck_up, my_cards)
-            if played:
-                turn = get_message(client_socket)
-                if turn == "out":
+                                    ask(board.grid[my_character.x][my_character.y].room_name)
+                                    if PLAYERS_OUT:
+                                        game = False
+                                        end = True
+                                        pictures.screen.fill(pictures.Black)
+                                        mas = pictures.font2.render("all other players left game", True, pictures.Black,
+                                                                    pictures.White)
+                                        pictures.screen.blit(mas, (450, 50))
+                                        pygame.display.flip()
+                                    else:
+                                        PLAYED = True
+                                        update()
+                                        draw(board, deck_up, my_cards)
+                                        client_socket.send("end".encode())
+            if PLAYED:
+                get_message()
+                if PLAYERS_OUT:
                     game = False
-                if turn == "lose":
+                    pictures.screen.fill(pictures.Black)
+                    mas = pictures.font2.render("all other players left game", True, pictures.Black, pictures.White)
+                    pictures.screen.blit(mas, (450, 50))
+                    pygame.display.flip()
+                    end = True
+                if LOOSE:
                     game = False
                     end = True
-                elif turn == "u":
-                    played = False
 
         except:
-            print("got shut down")
-            client_socket.close()
             break
-    client_socket.send("end".encode())
     client_socket.close()
     while end:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                print("end")
                 end = False
 
 

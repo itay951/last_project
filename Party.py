@@ -31,16 +31,18 @@ class Party:
                     continue
         self.killer = [self.suspects[0], self.weapons[0], self.rooms[0]]
         self.suspects = ["Miss Scarlett", "Rev. Green", "Colonel Mustard", "Mrs. Peacock", "Professor Plum", "Mrs. White"]
-        print(self.killer)
 
     def add(self, player):
+        # adds a new player to the party
         self.players.append(player)
         self.amount += 1
 
     def full(self):
+        # returns if th party is full
         return self.size == self.amount
 
-    def remove(self, player):
+    def remove_player(self, player):
+        # removes a player from the party
         for i in range(len(self.players)):
             if self.players[i] is player:
                 if self.full():
@@ -56,12 +58,10 @@ class Party:
         if self.turn >= self.size:
             self.turn = 0
 
-    def fileno(self):
-        return self.players[0].fileno()
-
     def all_out(self):
+        # checks if al the players got out of the game
         i = 0
         for player in self.players:
             if player == "out":
                 i += 1
-        return i+1 == self.size
+        return i+1 >= self.size
