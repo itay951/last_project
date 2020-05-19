@@ -1,14 +1,14 @@
 from pictures import *
 from Board_Object import *
-
+window_ratio = ctypes.windll.user32.GetSystemMetrics(0)/1280
 
 class Board:
     pictures = pictures()
     grid_size_x = 24
     grid_size_y = 25
-    cube_size = 24.5
-    x_0 = 33
-    y_0 = 30
+    cube_size = 24.5*window_ratio
+    x_0 = 33*window_ratio
+    y_0 = 30*window_ratio
     grid = []
 
     def __init__(self):

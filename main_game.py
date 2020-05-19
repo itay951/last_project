@@ -35,27 +35,27 @@ def make_cards(massage):
         for room in pictures.rooms_cards:
             if massage[i] == room[1]:
                 if i < 4:
-                    my_cards.append(Sprite(massage[i], 670 + 135 * i, 35, room[0]))
+                    my_cards.append(Sprite(massage[i], 670*pictures.window_ratio + 135*pictures.window_ratio * i, 35*pictures.window_ratio, room[0]))
                 elif i == 4:
-                    my_cards.append(Sprite(massage[i], 670, 210, room[0]))
+                    my_cards.append(Sprite(massage[i], 670*pictures.window_ratio, 210*pictures.window_ratio, room[0]))
                 elif i == 5:
-                    my_cards.append(Sprite(massage[i], 1075, 210, room[0]))
+                    my_cards.append(Sprite(massage[i], 1075*pictures.window_ratio, 210*pictures.window_ratio, room[0]))
         for character in pictures.characters_cards:
             if massage[i] == character[1]:
                 if i < 4:
-                    my_cards.append(Sprite(massage[i], 670 + 135 * i, 35, character[0]))
+                    my_cards.append(Sprite(massage[i], 670*pictures.window_ratio + 135*pictures.window_ratio * i, 35*pictures.window_ratio, character[0]))
                 elif i == 4:
-                    my_cards.append(Sprite(massage[i], 670, 210, character[0]))
+                    my_cards.append(Sprite(massage[i], 670*pictures.window_ratio, 210*pictures.window_ratio, character[0]))
                 elif i == 5:
-                    my_cards.append(Sprite(massage[i], 1075, 210, character[0]))
+                    my_cards.append(Sprite(massage[i], 1075*pictures.window_ratio, 210*pictures.window_ratio, character[0]))
         for weapon in pictures.weapons_cards:
             if massage[i] == weapon[1]:
                 if i < 4:
-                    my_cards.append(Sprite(massage[i], 670 + 135 * i, 35, weapon[0]))
+                    my_cards.append(Sprite(massage[i], 670*pictures.window_ratio + 135*pictures.window_ratio * i, 35*pictures.window_ratio, weapon[0]))
                 elif i == 4:
-                    my_cards.append(Sprite(massage[i], 670, 210, weapon[0]))
+                    my_cards.append(Sprite(massage[i], 670*pictures.window_ratio, 210*pictures.window_ratio, weapon[0]))
                 elif i == 5:
-                    my_cards.append(Sprite(massage[i], 1075, 210, weapon[0]))
+                    my_cards.append(Sprite(massage[i], 1075*pictures.window_ratio, 210*pictures.window_ratio, weapon[0]))
 
 
 def get_message():
@@ -69,7 +69,7 @@ def get_message():
     if mass[0] == "all out":
         pictures.screen.fill(pictures.Black)
         left = pictures.font2.render("rest of the players got out", True, pictures.Black, pictures.White)
-        pictures.screen.blit(left, (200, 100))
+        pictures.screen.blit(left, (200*pictures.window_ratio, 100*pictures.window_ratio))
         pygame.display.flip()
         PLAYERS_OUT = True
         return
@@ -113,104 +113,104 @@ def get_message():
         has_wea = False
         for card in my_cards:
             if card.name == mass[0]:
-                pictures.screen.blit(card.img, (200, 100))
+                pictures.screen.blit(card.img, (200*pictures.window_ratio, 100*pictures.window_ratio))
                 has_room = True
             if card.name == mass[1]:
-                pictures.screen.blit(card.img, (350, 100))
+                pictures.screen.blit(card.img, (350*pictures.window_ratio, 100*pictures.window_ratio))
                 has_sus = True
             if card.name == mass[2]:
-                pictures.screen.blit(card.img, (500, 100))
+                pictures.screen.blit(card.img, (500*pictures.window_ratio, 100*pictures.window_ratio))
                 has_wea = True
         pygame.display.flip()
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     mouse_x, mouse_y = event.pos
-                    if 100 < mouse_y < 275:
+                    if 100*pictures.window_ratio < mouse_y < 275*pictures.window_ratio:
                         if has_room:
-                            if 200 < mouse_x < 320:
+                            if 200*pictures.window_ratio < mouse_x < 320*pictures.window_ratio:
                                 client_socket.send(("answer," + mass[0]).encode())
                                 return
                         if has_sus:
-                            if 350 < mouse_x < 470:
+                            if 350*pictures.window_ratio < mouse_x < 470*pictures.window_ratio:
                                 client_socket.send(("answer," + mass[1]).encode())
                                 return
                         if has_wea:
-                            if 500 < mouse_x < 620:
+                            if 500*pictures.window_ratio < mouse_x < 620*pictures.window_ratio:
                                 client_socket.send(("answer," + mass[2]).encode())
                                 return
     elif mass[0] == "answer":
         pictures.screen.fill(pictures.Black)
         if mass[1] == "no":
             answer = pictures.font2.render("no opponent has these cards", True, pictures.Black, pictures.White)
-            pictures.screen.blit(answer, (450, 50))
+            pictures.screen.blit(answer, (450*pictures.window_ratio, 50*pictures.window_ratio))
             pygame.display.flip()
         else:
             for room in pictures.rooms_cards:
                 if mass[1] == room[1]:
-                    pictures.screen.blit(room[0], (500, 200))
+                    pictures.screen.blit(room[0], (500*pictures.window_ratio, 200*pictures.window_ratio))
                     pygame.display.flip()
                     time.sleep(2)
             for character in pictures.characters_cards:
                 if mass[1] == character[1]:
-                    pictures.screen.blit(character[0], (500, 200))
+                    pictures.screen.blit(character[0], (500*pictures.window_ratio, 200*pictures.window_ratio))
                     pygame.display.flip()
                     time.sleep(2)
             for weapon in pictures.weapons_cards:
                 if mass[1] == weapon[1]:
-                    pictures.screen.blit(weapon[0], (500, 200))
+                    pictures.screen.blit(weapon[0], (500*pictures.window_ratio, 200*pictures.window_ratio))
                     pygame.display.flip()
                     time.sleep(2)
     elif mass[0] == "game over":
         if mass[1] == "yes":
             pictures.screen.fill(pictures.Black)
             massage = pictures.font2.render("you won", True, pictures.Black, pictures.White)
-            pictures.screen.blit(massage, (100, 50))
+            pictures.screen.blit(massage, (100*pictures.window_ratio, 50*pictures.window_ratio))
             d_b = pictures.font2.render("Dr. Black was killed in the:", True, pictures.Black, pictures.White)
-            pictures.screen.blit(d_b, (50, 285))
+            pictures.screen.blit(d_b, (50*pictures.window_ratio, 285*pictures.window_ratio))
             for room in pictures.rooms_cards:
                 if mass[2] == room[1]:
-                    pictures.screen.blit(room[0], (500, 200))
+                    pictures.screen.blit(room[0], (500*pictures.window_ratio, 200*pictures.window_ratio))
                     pygame.display.flip()
             for character in pictures.characters_cards:
                 if mass[3] == character[1]:
                     mas = pictures.font2.render("by:", True, pictures.Black, pictures.White)
-                    pictures.screen.blit(mas, (650, 285))
-                    pictures.screen.blit(character[0], (700, 200))
+                    pictures.screen.blit(mas, (650*pictures.window_ratio, 285*pictures.window_ratio))
+                    pictures.screen.blit(character[0], (700*pictures.window_ratio, 200*pictures.window_ratio))
                     pygame.display.flip()
             for weapon in pictures.weapons_cards:
                 if mass[4] == weapon[1]:
                     mas = pictures.font2.render("with a:", True, pictures.Black, pictures.White)
-                    pictures.screen.blit(mas, (840, 285))
-                    pictures.screen.blit(weapon[0], (950, 200))
+                    pictures.screen.blit(mas, (840*pictures.window_ratio, 285*pictures.window_ratio))
+                    pictures.screen.blit(weapon[0], (950*pictures.window_ratio, 200*pictures.window_ratio))
                     pygame.display.flip()
         elif mass[1] == "no":
             pictures.screen.fill(pictures.Black)
             massage = pictures.font2.render("you lost", True, pictures.Black, pictures.White)
-            pictures.screen.blit(massage, (100, 50))
+            pictures.screen.blit(massage, (100*pictures.window_ratio, 50*pictures.window_ratio))
             pygame.display.flip()
             return
         else:
             pictures.screen.fill(pictures.Black)
             massage = pictures.font2.render(mass[1]+" won", True, pictures.Black, pictures.White)
-            pictures.screen.blit(massage, (100, 50))
+            pictures.screen.blit(massage, (100*pictures.window_ratio, 50*pictures.window_ratio))
             d_b = pictures.font2.render("Dr. Black was killed in the:", True, pictures.Black, pictures.White)
-            pictures.screen.blit(d_b, (50, 285))
+            pictures.screen.blit(d_b, (50*pictures.window_ratio, 285*pictures.window_ratio))
             for room in pictures.rooms_cards:
                 if mass[2] == room[1]:
-                    pictures.screen.blit(room[0], (500, 200))
+                    pictures.screen.blit(room[0], (500*pictures.window_ratio, 200*pictures.window_ratio))
                     pygame.display.flip()
             for character in pictures.characters_cards:
                 if mass[3] == character[1]:
                     mas = pictures.font2.render("by:", True, pictures.Black, pictures.White)
-                    pictures.screen.blit(mas, (650, 285))
-                    pictures.screen.blit(character[0], (700, 200))
+                    pictures.screen.blit(mas, (650*pictures.window_ratio, 285*pictures.window_ratio))
+                    pictures.screen.blit(character[0], (700*pictures.window_ratio, 200*pictures.window_ratio))
                     pygame.display.flip()
             for weapon in pictures.weapons_cards:
                 if mass[4] == weapon[1]:
                     mas = pictures.font2.render("with a:", True, pictures.Black, pictures.White)
-                    pictures.screen.blit(mas, (840, 285))
-                    pictures.screen.blit(weapon[0], (950, 200))
+                    pictures.screen.blit(mas, (840*pictures.window_ratio, 285*pictures.window_ratio))
+                    pictures.screen.blit(weapon[0], (950*pictures.window_ratio, 200*pictures.window_ratio))
                     pygame.display.flip()
             LOOSE = True
             return
@@ -266,13 +266,13 @@ def main():
                 return
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_x, mouse_y = event.pos
-                if 400 < mouse_y < 500:
-                    if 100 < mouse_x < 620:
+                if 400*pictures.window_ratio < mouse_y < 500*pictures.window_ratio:
+                    if 100*pictures.window_ratio < mouse_x < 620*pictures.window_ratio:
                         first = False
                         lobby = True
         button = pictures.font3.render("start game", True, pictures.Black, pictures.White)
         pictures.screen.blit(pictures.bg, (0, 0))
-        pictures.screen.blit(button, (100, 400))
+        pictures.screen.blit(button, (100*pictures.window_ratio, 400*pictures.window_ratio))
         pygame.display.flip()
     draw_waiting_room()
     while lobby:
@@ -284,21 +284,21 @@ def main():
                     lobby = False
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_x, mouse_y = event.pos
-                if 100 < mouse_y < 200:
-                    if 450 < mouse_x < 500:
+                if 100*pictures.window_ratio < mouse_y < 200*pictures.window_ratio:
+                    if 450*pictures.window_ratio < mouse_x < 500*pictures.window_ratio:
                         client_socket.send(("oppo," + str(3)).encode())
                         lobby = False
                         wait = True
                         get_message()
-                    if 550 < mouse_x < 600:
+                    if 550*pictures.window_ratio < mouse_x < 600*pictures.window_ratio:
                         client_socket.send(("oppo," + str(4)).encode())
                         lobby = False
                         wait = True
-                    if 650 < mouse_x < 700:
+                    if 650*pictures.window_ratio < mouse_x < 700*pictures.window_ratio:
                         client_socket.send(("oppo," + str(5)).encode())
                         lobby = False
                         wait = True
-                    if 750 < mouse_x < 800:
+                    if 750*pictures.window_ratio < mouse_x < 800*pictures.window_ratio:
                         client_socket.send(("oppo," + str(6)).encode())
                         lobby = False
                         wait = True
@@ -314,6 +314,7 @@ def main():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     wait = False
+
         if PLAYERS_OUT:
             game = False
             wait = False
@@ -338,39 +339,39 @@ def main():
                         break
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     mouse_x, mouse_y = event.pos
-                    if (pictures.lists_button_pos[0] + 75 >= mouse_x >= pictures.lists_button_pos[0]) and \
-                            (pictures.lists_button_pos[1] + 35 >= mouse_y >= pictures.lists_button_pos[1]):
+                    if (pictures.lists_button_pos[0] + 75*pictures.window_ratio >= mouse_x >= pictures.lists_button_pos[0]) and \
+                            (pictures.lists_button_pos[1] + 35*pictures.window_ratio >= mouse_y >= pictures.lists_button_pos[1]):
                         deck_up = False
                         draw(board, deck_up, my_cards)
                     for i in range(3):
                         for j in range(3):
-                            if pictures.rooms[i][j].x <= mouse_x <= pictures.rooms[i][j].x + 80 and \
-                                    pictures.rooms[i][j].y <= mouse_y <= pictures.rooms[i][j].y + 40:
+                            if pictures.rooms[i][j].x <= mouse_x <= pictures.rooms[i][j].x + 80*pictures.window_ratio and \
+                                    pictures.rooms[i][j].y <= mouse_y <= pictures.rooms[i][j].y + 40*pictures.window_ratio:
                                 if event.button == 1:
                                     pictures.rooms[i][j].img = pictures.check
                                 if event.button == 3:
                                     pictures.rooms[i][j].img = pictures.red_x
                             try:
-                                if pictures.weapons[i][j].x <= mouse_x <= pictures.weapons[i][j].x + 80 and \
-                                        pictures.weapons[i][j].y <= mouse_y <= pictures.weapons[i][j].y + 40:
+                                if pictures.weapons[i][j].x <= mouse_x <= pictures.weapons[i][j].x + 80*pictures.window_ratio and \
+                                        pictures.weapons[i][j].y <= mouse_y <= pictures.weapons[i][j].y + 40*pictures.window_ratio:
                                     if event.button == 1:
                                         pictures.weapons[i][j].img = pictures.check
                                     if event.button == 3:
                                         pictures.weapons[i][j].img = pictures.red_x
-                                if pictures.suspects[i][j].x <= mouse_x <= pictures.suspects[i][j].x + 100 and \
-                                        pictures.suspects[i][j].y <= mouse_y <= pictures.suspects[i][j].y + 40:
+                                if pictures.suspects[i][j].x <= mouse_x <= pictures.suspects[i][j].x + 100*pictures.window_ratio and \
+                                        pictures.suspects[i][j].y <= mouse_y <= pictures.suspects[i][j].y + 40*pictures.window_ratio:
                                     if event.button == 1:
-                                        check = pygame.transform.scale(pictures.check, (100, 40))
+                                        check = pygame.transform.scale(pictures.check, (100*pictures.window_ratio, 40*pictures.window_ratio))
                                         pictures.suspects[i][j].img = check
                                     if event.button == 3:
-                                        red_x = pygame.transform.scale(pictures.red_x, (100, 40))
+                                        red_x = pygame.transform.scale(pictures.red_x, (100*pictures.window_ratio, 40*pictures.window_ratio))
                                         pictures.suspects[i][j].img = red_x
                             except:
                                 pass
                     if not PLAYED:
                         if event.button == 1:
-                            if (pictures.roll_button_pos[0] <= mouse_x <= pictures.roll_button_pos[0] + 50) and \
-                                    (pictures.roll_button_pos[1] <= mouse_y <= pictures.roll_button_pos[1] + 35):
+                            if (pictures.roll_button_pos[0] <= mouse_x <= pictures.roll_button_pos[0] + 50*pictures.window_ratio) and \
+                                    (pictures.roll_button_pos[1] <= mouse_y <= pictures.roll_button_pos[1] + 35*pictures.window_ratio):
                                 game = move(deck_up)
                                 PLAYED = True
                                 for sprite in sprites:
@@ -382,25 +383,25 @@ def main():
                                 client_socket.send(("update," + my_character.name + "," + str(my_character.x) + "," + str(my_character.y)).encode())
                                 time.sleep(1)
                                 client_socket.send("end, ".encode())
-                            if (pictures.cards_button_pos[0] <= mouse_x <= pictures.cards_button_pos[0] + 100) and \
-                                    (pictures.cards_button_pos[1] <= mouse_y <= pictures.cards_button_pos[1] + 35):
+                            if (pictures.cards_button_pos[0] <= mouse_x <= pictures.cards_button_pos[0] + 100*window_ratio) and \
+                                    (pictures.cards_button_pos[1] <= mouse_y <= pictures.cards_button_pos[1] + 35*window_ratio):
                                 deck_up = True
                                 pictures.screen.fill(pictures.Black)
-                            if (pictures.accuse_button_pos[0] + 200 >= mouse_x >= pictures.accuse_button_pos[0]) and \
-                                    (pictures.accuse_button_pos[1] + 35 >= mouse_y >= pictures.accuse_button_pos[1]):
+                            if (pictures.accuse_button_pos[0] + 200*pictures.window_ratio >= mouse_x >= pictures.accuse_button_pos[0]) and \
+                                    (pictures.accuse_button_pos[1] + 35*window_ratio >= mouse_y >= pictures.accuse_button_pos[1]):
                                 if board.grid[my_character.x][my_character.y].ident == "room":
                                     accuse(board.grid[my_character.x][my_character.y].room_name)
                                     if PLAYERS_OUT:
                                         pictures.screen.fill(pictures.Black)
                                         mas = pictures.font2.render("all other players left game", True, pictures.Black, pictures.White)
-                                        pictures.screen.blit(mas, (450, 50))
+                                        pictures.screen.blit(mas, (450*pictures.window_ratio, 50*pictures.window_ratio))
                                         pygame.display.flip()
                                     else:
                                         client_socket.send("end".encode())
                                     game = False
                                     end = True
-                            if (pictures.question_button_pos[0] + 200 >= mouse_x >= pictures.question_button_pos[0]) and \
-                                    (pictures.question_button_pos[1] + 35 >= mouse_y >= pictures.question_button_pos[1]):
+                            if (pictures.question_button_pos[0] + 200*window_ratio >= mouse_x >= pictures.question_button_pos[0]) and \
+                                    (pictures.question_button_pos[1] + 35*window_ratio >= mouse_y >= pictures.question_button_pos[1]):
                                 if board.grid[my_character.x][my_character.y].ident == "room":
                                     ask(board.grid[my_character.x][my_character.y].room_name)
                                     if PLAYERS_OUT:
@@ -409,7 +410,7 @@ def main():
                                         pictures.screen.fill(pictures.Black)
                                         mas = pictures.font2.render("all other players left game", True, pictures.Black,
                                                                     pictures.White)
-                                        pictures.screen.blit(mas, (450, 50))
+                                        pictures.screen.blit(mas, (450*pictures.window_ratio, 50*pictures.window_ratio))
                                         pygame.display.flip()
                                     else:
                                         PLAYED = True
@@ -422,7 +423,7 @@ def main():
                     game = False
                     pictures.screen.fill(pictures.Black)
                     mas = pictures.font2.render("all other players left game", True, pictures.Black, pictures.White)
-                    pictures.screen.blit(mas, (450, 50))
+                    pictures.screen.blit(mas, (450*pictures.window_ratio, 50*pictures.window_ratio))
                     pygame.display.flip()
                     end = True
                 if LOOSE:
