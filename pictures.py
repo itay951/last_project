@@ -161,7 +161,6 @@ class pictures:
                 suspects[i][j].bg = white_block2
                 suspects[i][j].word = font.render(suspects_names[k], True, Black, White)
             k += 1
-    pygame.display.update()
 
     # buttons
     font2 = pygame.font.Font('freesansbold.ttf', int(32*window_ratio))
@@ -261,14 +260,12 @@ def draw(board, deck, cards):
     pictures.screen.fill(pictures.Black)
     pictures.screen.blit(pictures.tile, (0, 0))
     pictures.screen.blit(pictures.grey, (660*pictures.window_ratio, 10*pictures.window_ratio))
+    if deck:
+        for card in cards:
+            pictures.screen.blit(card.img, (card.x, card.y))
     for x in range(board.grid_size_x):
         for y in range(board.grid_size_y):
-            if board.grid[x][y].sprite is not None:
-                pictures.screen.blit(board.grid[x][y].sprite, (board.grid[x][y].x, board.grid[x][y].y))
-            if deck:
-                for card in cards:
-                    pictures.screen.blit(card.img, (card.x, card.y))
-            else:
+            if not deck:
                 if x < 3 and y < 3:
                     pictures.screen.blit(pictures.rooms[x][y].bg, (pictures.rooms[x][y].x, pictures.rooms[x][y].y))
                     pictures.screen.blit(pictures.rooms[x][y].word, (pictures.rooms[x][y].x, pictures.rooms[x][y].y+15))
@@ -287,6 +284,8 @@ def draw(board, deck, cards):
                             pictures.screen.blit(pictures.suspects[x][y].img, (pictures.suspects[x][y].x, pictures.suspects[x][y].y))
                         if pictures.weapons[x][y].img is not None:
                             pictures.screen.blit(pictures.weapons[x][y].img, (pictures.weapons[x][y].x, pictures.weapons[x][y].y))
+            if board.grid[x][y].sprite is not None:
+                pictures.screen.blit(board.grid[x][y].sprite, (board.grid[x][y].x, board.grid[x][y].y))
     pictures.screen.blit(pictures.roll, pictures.roll_button_pos)
     pictures.screen.blit(pictures.question, pictures.question_button_pos)
     pictures.screen.blit(pictures.accuse, pictures.accuse_button_pos)
@@ -294,7 +293,7 @@ def draw(board, deck, cards):
     pictures.screen.blit(pictures.lists, pictures.lists_button_pos)
     pictures.screen.blit(pictures.cube_1, pictures.cube1_pos)
     pictures.screen.blit(pictures.cube_2, pictures.cube2_pos)
-    pygame.display.update()
+    pygame.display.flip()
 
 
 def draw_cube(cube1, cube2):
