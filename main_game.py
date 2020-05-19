@@ -4,7 +4,6 @@ from pictures import *
 from Sprite import *
 import socket
 import time
-import select
 
 while True:
     try:
@@ -20,24 +19,18 @@ PLAYED = False
 LOOSE = False
 board = Board()
 pictures = pictures()
-sprites = []
-sprites.append(Sprite("Miss Scarlett", 16, 0, pictures.red))
-sprites.append(Sprite("Colonel Mustard", 23, 7, pictures.yellow))
-sprites.append(Sprite("Rev. Green", 9, 24, pictures.green))
-sprites.append(Sprite("Professor Plum", 0, 5, pictures.purple))
-sprites.append(Sprite("Mrs. Peacock", 0, 18, pictures.blue))
-sprites.append(Sprite("Mrs. White", 14, 24, pictures.white))
-sprites.append(Sprite("dagger", 21, 1, pictures.dagger))
-sprites.append(Sprite("rope", 21, 10, pictures.rope))
-sprites.append(Sprite("candlestick", 1, 1, pictures.candlestick))
-sprites.append(Sprite("gun", 10, 1, pictures.gun))
-sprites.append(Sprite("pipe", 1, 7, pictures.pipe))
-sprites.append(Sprite("wrench", 1, 13, pictures.wrench))
+sprites = [Sprite("Miss Scarlett", 16, 0, pictures.red), Sprite("Colonel Mustard", 23, 7, pictures.yellow),
+           Sprite("Rev. Green", 9, 24, pictures.green), Sprite("Professor Plum", 0, 5, pictures.purple),
+           Sprite("Mrs. Peacock", 0, 18, pictures.blue), Sprite("Mrs. White", 14, 24, pictures.white),
+           Sprite("dagger", 21, 1, pictures.dagger), Sprite("rope", 21, 10, pictures.rope),
+           Sprite("candlestick", 1, 1, pictures.candlestick), Sprite("gun", 10, 1, pictures.gun),
+           Sprite("pipe", 1, 7, pictures.pipe), Sprite("wrench", 1, 13, pictures.wrench)]
 my_cards = []
 my_character = None
 
 
 def make_cards(massage):
+    # receives a list of names of the cards that the player has and makes a list of images of the cards the player have
     for i in range(len(massage)):
         for room in pictures.rooms_cards:
             if massage[i] == room[1]:
@@ -66,12 +59,12 @@ def make_cards(massage):
 
 
 def get_message():
+    # tries to get a message from the server and if it gets a message it checks what it says and doing things accordingly
     global PLAYED, PLAYERS_OUT, BEGIN, LOOSE, my_character, client_socket
     try:
         mass = client_socket.recv(1024).decode()
     except:
         return
-    print(mass)
     mass = mass.split(",")
     if mass[0] == "all out":
         pictures.screen.fill(pictures.Black)
@@ -96,7 +89,6 @@ def get_message():
             if mass[-1] == sprites[k].name:
                 my_character = sprites[k]
         mass.pop(-1)
-        print(mass)
         make_cards(mass)
     elif mass[0] == "names":
         mass.pop(0)
@@ -134,7 +126,6 @@ def get_message():
             for event in pygame.event.get():
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     mouse_x, mouse_y = event.pos
-                    print(event.pos)
                     if 100 < mouse_y < 275:
                         if has_room:
                             if 200 < mouse_x < 320:
@@ -226,6 +217,7 @@ def get_message():
 
 
 def ask(room):
+    # gets what the player wants to ask about and sends it to the server
     global client_socket
     sus, wea = draw_ask_lists()
     client_socket.send(("ask," + room + "," + sus + "," + wea).encode())
@@ -233,6 +225,7 @@ def ask(room):
 
 
 def accuse(room):
+    # gets what the player wants to accuse at and sends it to the server
     global client_socket
     sus, wea = draw_ask_lists()
     client_socket.send(("accuse," + room + "," + sus + "," + wea).encode())
@@ -240,11 +233,13 @@ def accuse(room):
 
 
 def update():
+    # update the places of the players
     for sprite in sprites:
         board.grid[sprite.x][sprite.y].sprite = sprite.img
 
 
 def move(deck):
+    # generates two random numbers as the cubes and call the roll function
     rand = random.randint(1, 6)
     rand2 = random.randint(1, 6)
     draw_cube(rand, rand2)
@@ -271,7 +266,6 @@ def main():
                 return
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_x, mouse_y = event.pos
-                print(event.pos)
                 if 400 < mouse_y < 500:
                     if 100 < mouse_x < 620:
                         first = False
@@ -386,10 +380,8 @@ def main():
                                 update()
                                 draw(board, deck_up, my_cards)
                                 client_socket.send(("update," + my_character.name + "," + str(my_character.x) + "," + str(my_character.y)).encode())
-                                print("update")
                                 time.sleep(1)
                                 client_socket.send("end, ".encode())
-                                print("end")
                             if (pictures.cards_button_pos[0] <= mouse_x <= pictures.cards_button_pos[0] + 100) and \
                                     (pictures.cards_button_pos[1] <= mouse_y <= pictures.cards_button_pos[1] + 35):
                                 deck_up = True
@@ -438,18 +430,13 @@ def main():
                     end = True
 
         except:
-            print("got shut down")
             break
     client_socket.close()
     while end:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                print("end")
                 end = False
 
 
 if __name__ == '__main__':
     main()
-# can't get out without crashing
-# check if the problem is in the server or the client
-# I would like to check in the lab
