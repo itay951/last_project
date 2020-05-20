@@ -31,7 +31,6 @@ class Party:
                     continue
         self.killer = [self.suspects[0], self.weapons[0], self.rooms[0]]
         self.suspects = ["Miss Scarlett", "Rev. Green", "Colonel Mustard", "Mrs. Peacock", "Professor Plum", "Mrs. White"]
-        print(self.killer)
 
     def add(self, player):
         # adds a new player to the party

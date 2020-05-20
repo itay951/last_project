@@ -13,7 +13,6 @@ s_s.listen(5)
 def send_messages(wlist):
     for massage in m_t_s:
         (c_s, data) = massage
-        print(data)
         data = data.split(",")
         for client in wlist:
             if client is c_s:
