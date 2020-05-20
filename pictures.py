@@ -294,7 +294,7 @@ def draw(board, deck, cards):
     pictures.screen.blit(pictures.lists, pictures.lists_button_pos)
     pictures.screen.blit(pictures.cube_1, pictures.cube1_pos)
     pictures.screen.blit(pictures.cube_2, pictures.cube2_pos)
-    pictures.screen.blit(turn, (670*pictures.window_ratio, 340*pictures.window_ratio))
+    pictures.screen.blit(pictures.turn, (670*pictures.window_ratio, 340*pictures.window_ratio))
     pygame.display.flip()
 
 
