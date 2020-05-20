@@ -13,7 +13,7 @@ while True:
         break
     except:
         pass
-TURN = ""
+TURN = "Scarlett's turn"
 PLAYERS_OUT = False
 BEGIN = False
 PLAYED = False
@@ -63,13 +63,12 @@ def make_cards(massage):
 
 def get_message():
     # tries to get a message from the server and if it gets a message it checks what it says and doing things accordingly
-    global PLAYED, PLAYERS_OUT, BEGIN, LOOSE, my_character, client_socket, GAME, END
+    global PLAYED, PLAYERS_OUT, BEGIN, LOOSE, my_character, client_socket, GAME, END, TURN
     try:
         mass = client_socket.recv(1024).decode()
     except:
         return
     mass = mass.split(",")
-    print(mass)
     if mass[0] == "all out":
         pictures.screen.fill(pictures.Black)
         left = pictures.font2.render("rest of the players got out", True, pictures.Black, pictures.White)
@@ -79,7 +78,7 @@ def get_message():
         return
     if mass[0] == "start":
         if mass[1] == "yes":
-            pictures.turn = pictures.font.render("your turn", True, pictures.Black, pictures.White)
+            TURN = pictures.font.render("your turn", True, pictures.Black, pictures.White)
             BEGIN = True
             PLAYED = False
             return
@@ -106,15 +105,15 @@ def get_message():
                 sprite.x = int(mass[2])
                 sprite.y = int(mass[3])
         update()
-        draw(board, True, my_cards)
+        draw(board, True, my_cards, TURN)
     elif mass[0] == "turn":
         if mass[1] == "your":
             PLAYED = False
             turn = mass[1] + " turn"
-            pictures.turn = pictures.font.render(turn, True, pictures.Black, pictures.White)
+            TURN = pictures.font.render(turn, True, pictures.Black, pictures.White)
             return
         turn = mass[1] + "'s turn"
-        pictures.turn = pictures.font.render(turn, True, pictures.Black, pictures.White)
+        TURN = pictures.font.render(turn, True, pictures.Black, pictures.White)
         return
     elif mass[0] == "ask":
         mass.pop(0)
@@ -244,7 +243,6 @@ def accuse(room):
     global client_socket
     sus, wea = draw_ask_lists()
     client_socket.send(("accuse," + room + "," + sus + "," + wea).encode())
-    print("accuse")
     get_message()
 
 
@@ -269,7 +267,7 @@ def move(deck):
 
 
 def main():
-    global PLAYED, BEGIN, PLAYERS_OUT, LOOSE, client_socket, GAME, END
+    global PLAYED, BEGIN, PLAYERS_OUT, LOOSE, client_socket, GAME, END, TURN
     lobby = False
     wait = False
     PLAYED = False
@@ -339,7 +337,7 @@ def main():
     deck_up = False
     while GAME:
         update()
-        draw(board, deck_up, my_cards)
+        draw(board, deck_up, my_cards, TURN)
         try:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -359,7 +357,7 @@ def main():
                     if (pictures.cards_button_pos[0] <= mouse_x <= pictures.cards_button_pos[0] + 100*window_ratio) and \
                             (pictures.cards_button_pos[1] <= mouse_y <= pictures.cards_button_pos[1] + 35*window_ratio):
                         deck_up = True
-                    draw(board, deck_up, my_cards)
+                    draw(board, deck_up, my_cards, TURN)
                     if not deck_up:
                         for i in range(3):
                             for j in range(3):
@@ -395,7 +393,7 @@ def main():
                                         sprite.x = my_character.x
                                         sprite.y = my_character.y
                                 update()
-                                draw(board, deck_up, my_cards)
+                                draw(board, deck_up, my_cards, TURN)
                                 client_socket.send(("update," + my_character.name + "," + str(my_character.x) + "," + str(my_character.y)).encode())
                                 time.sleep(1)
                                 client_socket.send("end, ".encode())

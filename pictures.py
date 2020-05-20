@@ -172,7 +172,6 @@ class pictures:
     accuse_button = question.get_rect()
     cards = font2.render('cards', True, Black, White)
     lists = font2.render('lists', True, Black, White)
-    turn = font.render("Miss Scarlett's turn", True, Black, White)
 
     # cards
     # rooms
@@ -256,7 +255,7 @@ class pictures:
         oppo_amount.append(List_Object(450*window_ratio + 100*i*window_ratio, 100*window_ratio, font3.render(str(i+3), True, Black, White)))
 
 
-def draw(board, deck, cards):
+def draw(board, deck, cards, turn):
     # output to the screen
     pictures.screen.fill(pictures.Black)
     pictures.screen.blit(pictures.tile, (0, 0))
@@ -294,7 +293,7 @@ def draw(board, deck, cards):
     pictures.screen.blit(pictures.lists, pictures.lists_button_pos)
     pictures.screen.blit(pictures.cube_1, pictures.cube1_pos)
     pictures.screen.blit(pictures.cube_2, pictures.cube2_pos)
-    pictures.screen.blit(pictures.turn, (670*pictures.window_ratio, 400*pictures.window_ratio))
+    pictures.screen.blit(turn, (670*pictures.window_ratio, 400*pictures.window_ratio))
     pygame.display.flip()
 
 
