@@ -79,6 +79,7 @@ def get_message():
         return
     if mass[0] == "start":
         if mass[1] == "yes":
+            pictures.turn = pictures.font2.render("your turn", True, pictures.Black, pictures.White)
             BEGIN = True
             PLAYED = False
             return
