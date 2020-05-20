@@ -13,6 +13,7 @@ s_s.listen(5)
 def send_messages(wlist):
     for massage in m_t_s:
         (c_s, data) = massage
+        print(data)
         data = data.split(",")
         for client in wlist:
             if client is c_s:
@@ -87,6 +88,7 @@ def send_messages(wlist):
                         for player in party.players:
                             if c_s is player:
                                 c_s.send(("game over,yes," + data).encode())
+                                print("game end")
                             else:
                                 if player != "out":
                                     player.send(("game over," + party.player_cards[party.turn][-1] + "," + data).encode())
@@ -109,6 +111,8 @@ def send_messages(wlist):
                 if data[0] == "answer":
                     data = ",".join(data)
                     party.players[party.turn].send(data.encode())
+                    print("send answer")
+                    print(party.player_cards[party.turn][-1])
                 if data[0] == "end":
                     party.next_turn()
                     while True:
