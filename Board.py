@@ -2,6 +2,7 @@ from pictures import *
 from Board_Object import *
 window_ratio = ctypes.windll.user32.GetSystemMetrics(0)/1280
 
+
 class Board:
     pictures = pictures()
     grid_size_x = 24
@@ -144,7 +145,7 @@ class Board:
                     self.room(i-1, j-1, self.grid[i][j].room)
                     self.room(i+1, j-1, self.grid[i][j].room)
 
-    def move(self, myself, steps, deck, cards):
+    def move(self, myself, steps, deck, cards, tu):
         # a recursive function that checks your movement input and your position and moves your your piece accordingly
         if steps != 0:
             breaked = False
@@ -176,7 +177,7 @@ class Board:
                                 myself.x = int((tile.x - self.x_0)/self.cube_size)
                                 myself.y = int((tile.y - self.y_0)/self.cube_size)
                                 return
-            draw(self, deck, cards)
+            draw(self, deck, cards, tu)
             waiting = True
             while waiting:
                 for event in pygame.event.get():
@@ -197,9 +198,9 @@ class Board:
                                         waiting = False
                                         self.grid[myself.x][myself.y].sprite = None
                                         self.grid[myself.x-1][myself.y].sprite = myself.img
-                                        draw(self, deck, cards)
+                                        draw(self, deck, cards, tu)
                                         myself.x -= 1
-                                        self.move(myself, steps-1, deck, cards)
+                                        self.move(myself, steps-1, deck, cards, tu)
                         if event.key == pygame.K_RIGHT:
                             if myself.x+1 <= 23:
                                 if self.grid[myself.x+1][myself.y].ident != "wall":
@@ -210,9 +211,9 @@ class Board:
                                         waiting = False
                                         self.grid[myself.x][myself.y].sprite = None
                                         self.grid[myself.x+1][myself.y].sprite = myself.img
-                                        draw(self, deck, cards)
+                                        draw(self, deck, cards, tu)
                                         myself.x += 1
-                                        self.move(myself, steps-1, deck, cards)
+                                        self.move(myself, steps-1, deck, cards, tu)
                         if event.key == pygame.K_UP:
                             if myself.y-1 >= 0:
                                 if self.grid[myself.x][myself.y-1].ident != "wall":
@@ -223,9 +224,9 @@ class Board:
                                         waiting = False
                                         self.grid[myself.x][myself.y].sprite = None
                                         self.grid[myself.x][myself.y-1].sprite = myself.img
-                                        draw(self, deck, cards)
+                                        draw(self, deck, cards, tu)
                                         myself.y -= 1
-                                        self.move(myself, steps-1, deck, cards)
+                                        self.move(myself, steps-1, deck, cards, tu)
                         if event.key == pygame.K_DOWN:
                             if myself.y+1 <= 24:
                                 if self.grid[myself.x][myself.y+1].ident != "wall":
@@ -236,9 +237,9 @@ class Board:
                                         waiting = False
                                         self.grid[myself.x][myself.y].sprite = None
                                         self.grid[myself.x][myself.y+1].sprite = myself.img
-                                        draw(self, deck, cards)
+                                        draw(self, deck, cards, tu)
                                         myself.y += 1
-                                        self.move(myself, steps-1,  deck, cards)
+                                        self.move(myself, steps-1,  deck, cards, tu)
 
         if self.grid[myself.x][myself.y].ident != "floor" or \
                 (self.grid[myself.x][myself.y].has_sprite() and self.grid[myself.x][myself.y].sprite is not myself.img):
@@ -251,14 +252,14 @@ class Board:
                         myself.y = int((tile.y - self.y_0)/self.cube_size)
                         return
 
-    def roll(self, me, rand, deck, cards):
+    def roll(self, me, rand, deck, cards, tur):
         # checks if the player in a room and let him to get out and then call move
         if self.grid[me.x][me.y].ident == "room":
             x1, y1, x2, y2, x3, y3, x4, y4 = self.find_door(me.x, me.y)
 
             not_pressed = True
             while not_pressed:
-                draw(self, deck, cards)
+                draw(self, deck, cards, tur)
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
                         return True
@@ -291,7 +292,7 @@ class Board:
             self.grid[x3][y3].sprite = None
             self.grid[x4][y4].sprite = None
 
-        self.move(me, rand, deck, cards)
+        self.move(me, rand, deck, cards, tur)
 
     def room(self, x, y, arr):
         # make an array of all the room parts that connect to a specific door
