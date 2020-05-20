@@ -13,7 +13,7 @@ while True:
         break
     except:
         pass
-TURN = pictures.font.render("Scarlett's turn", True, pictures.Black, pictures.White)
+TURN = pictures.font.render("Miss Scarlett's turn", True, pictures.Black, pictures.White)
 PLAYERS_OUT = False
 BEGIN = False
 PLAYED = False
