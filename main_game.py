@@ -13,6 +13,7 @@ while True:
         break
     except:
         pass
+TURN = ""
 PLAYERS_OUT = False
 BEGIN = False
 PLAYED = False
@@ -106,11 +107,13 @@ def get_message():
         update()
         draw(board, True, my_cards)
     elif mass[0] == "turn":
-        turn = mass[1] + "turn"
-        turn = pictures.font2.render(turn, True, pictures.Black, pictures.White)
-        pictures.screen.blit(turn, (670*pictures.window_ratio, 340*pictures.window_ratio))
         if mass[1] == "your":
             PLAYED = False
+            turn = mass[1] + " turn"
+            pictures.turn = pictures.font2.render(turn, True, pictures.Black, pictures.White)
+            return
+        turn = mass[1] + "'s turn"
+        pictures.turn = pictures.font2.render(turn, True, pictures.Black, pictures.White)
         return
     elif mass[0] == "ask":
         mass.pop(0)

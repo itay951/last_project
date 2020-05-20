@@ -172,6 +172,7 @@ class pictures:
     accuse_button = question.get_rect()
     cards = font2.render('cards', True, Black, White)
     lists = font2.render('lists', True, Black, White)
+    turn = font2.render("Miss Scarlett's turn", True, Black, White)
 
     # cards
     # rooms
@@ -293,6 +294,7 @@ def draw(board, deck, cards):
     pictures.screen.blit(pictures.lists, pictures.lists_button_pos)
     pictures.screen.blit(pictures.cube_1, pictures.cube1_pos)
     pictures.screen.blit(pictures.cube_2, pictures.cube2_pos)
+    pictures.screen.blit(turn, (670*pictures.window_ratio, 340*pictures.window_ratio))
     pygame.display.flip()
 
 
