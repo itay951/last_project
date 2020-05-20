@@ -12,8 +12,10 @@ s_s.listen(5)
 
 def send_messages(wlist):
     for massage in m_t_s:
+        print(massage)
         (c_s, data) = massage
         data = data.split(",")
+        print(data)
         for client in wlist:
             if client is c_s:
                 if data[0] == "oppo":
@@ -49,6 +51,7 @@ def send_messages(wlist):
                         c_s.send(("names" + names).encode())
         for party in parties:
             if c_s in party.players:
+                print(data)
                 if data[0] == "update":
                     data = ",".join(data)
                     for player in party.players:
@@ -96,7 +99,7 @@ def send_messages(wlist):
                         for player in party.players:
                             if c_s is player:
                                 data[0] = "end"
-                                party.remove_player(player)
+                                party.remove(player)
                                 o_c_s.remove(player)
                                 c_s.send("game over,no".encode())
                         if party.all_out():
@@ -111,6 +114,7 @@ def send_messages(wlist):
                     party.players[party.turn].send(data.encode())
                 if data[0] == "end":
                     party.next_turn()
+                    print(data[0])
                     while True:
                         if party.players[party.turn] != "out":
                             party.players[party.turn].send("turn".encode())
@@ -130,20 +134,22 @@ def main():
                 o_c_s.append(new_socket)
             else:
                 data = cu_s.recv(1024).decode()
+                print(data)
                 if data:
                     m_t_s.append((cu_s, data))
                 else:
-                    for player in o_c_s:
-                        if cu_s == player:
-                            o_c_s.remove(player)
-                    for party in parties:
-                        for player in party.players:
+                    if len(o_c_s) != 0:
+                        for player in o_c_s:
                             if cu_s == player:
-                                party.remove_player(player)
-                        if party.all_out():
+                                o_c_s.remove(player)
+                        for party in parties:
                             for player in party.players:
-                                if player != "out":
-                                    player.send("all out".encode())
+                                if cu_s == player:
+                                    party.remove(player)
+                            if party.all_out():
+                                for player in party.players:
+                                    if player != "out":
+                                        player.send("all out".encode())
                             parties.remove(party)
                 send_messages(wlist)
 

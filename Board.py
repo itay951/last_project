@@ -1,14 +1,14 @@
 from pictures import *
 from Board_Object import *
-window_ratio = ctypes.windll.user32.GetSystemMetrics(0)/1280
+
 
 class Board:
     pictures = pictures()
     grid_size_x = 24
     grid_size_y = 25
-    cube_size = 24.5*window_ratio
-    x_0 = 33*window_ratio
-    y_0 = 30*window_ratio
+    cube_size = 24.5
+    x_0 = 33
+    y_0 = 30
     grid = []
 
     def __init__(self):
@@ -145,8 +145,10 @@ class Board:
                     self.room(i+1, j-1, self.grid[i][j].room)
 
     def move(self, myself, steps, deck, cards):
-        # a recursive function that checks your movement input and your position and moves your your piece accordingly
         if steps != 0:
+            print(myself.x)
+            print(myself.y)
+            print(steps)
             breaked = False
             if self.grid[myself.x][myself.y].ident != "floor" or \
                     (self.grid[myself.x][myself.y].has_sprite() and self.grid[myself.x][myself.y].sprite is not myself):
@@ -252,7 +254,6 @@ class Board:
                         return
 
     def roll(self, me, rand, deck, cards):
-        # checks if the player in a room and let him to get out and then call move
         if self.grid[me.x][me.y].ident == "room":
             x1, y1, x2, y2, x3, y3, x4, y4 = self.find_door(me.x, me.y)
 
@@ -294,7 +295,6 @@ class Board:
         self.move(me, rand, deck, cards)
 
     def room(self, x, y, arr):
-        # make an array of all the room parts that connect to a specific door
         for i in range(len(arr)):
             if arr[i] is self.grid[x][y]:
                 return
@@ -306,7 +306,6 @@ class Board:
             self.room(x, y-1, arr)
 
     def find_door(self, x, y):
-        # return the doors that are connected to each room
         x1 = 0
         y1 = 0
         x2 = 0
