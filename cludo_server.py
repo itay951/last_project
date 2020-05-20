@@ -111,6 +111,8 @@ def send_messages(wlist):
                 if data[0] == "answer":
                     data = ",".join(data)
                     party.players[party.turn].send(data.encode())
+                    print("send answer")
+                    print(party.player_cards[party.turn][-1])
                 if data[0] == "end":
                     party.next_turn()
                     while True:

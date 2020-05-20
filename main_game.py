@@ -164,7 +164,6 @@ def get_message():
                     pictures.screen.blit(weapon[0], (500*pictures.window_ratio, 200*pictures.window_ratio))
                     pygame.display.flip()
                     time.sleep(2)
-        PLAYED = True
         client_socket.send("end".encode())
     elif mass[0] == "game over":
         client_socket.send("end".encode())
@@ -403,6 +402,8 @@ def main():
                                         mas = pictures.font2.render("all other players left game", True, pictures.Black, pictures.White)
                                         pictures.screen.blit(mas, (450*pictures.window_ratio, 50*pictures.window_ratio))
                                         pygame.display.flip()
+                                    else:
+                                        PLAYED = True
                             if (pictures.question_button_pos[0] + 200*window_ratio >= mouse_x >= pictures.question_button_pos[0]) and \
                                     (pictures.question_button_pos[1] + 35*window_ratio >= mouse_y >= pictures.question_button_pos[1]):
                                 if board.grid[my_character.x][my_character.y].ident == "room":
@@ -415,6 +416,8 @@ def main():
                                                                     pictures.White)
                                         pictures.screen.blit(mas, (450*pictures.window_ratio, 50*pictures.window_ratio))
                                         pygame.display.flip()
+                                    else:
+                                        PLAYED = True
 
             if PLAYED:
                 get_message()
