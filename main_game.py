@@ -79,7 +79,7 @@ def get_message():
         return
     if mass[0] == "start":
         if mass[1] == "yes":
-            pictures.turn = pictures.font2.render("your turn", True, pictures.Black, pictures.White)
+            pictures.turn = pictures.font.render("your turn", True, pictures.Black, pictures.White)
             BEGIN = True
             PLAYED = False
             return
@@ -111,10 +111,10 @@ def get_message():
         if mass[1] == "your":
             PLAYED = False
             turn = mass[1] + " turn"
-            pictures.turn = pictures.font2.render(turn, True, pictures.Black, pictures.White)
+            pictures.turn = pictures.font.render(turn, True, pictures.Black, pictures.White)
             return
         turn = mass[1] + "'s turn"
-        pictures.turn = pictures.font2.render(turn, True, pictures.Black, pictures.White)
+        pictures.turn = pictures.font.render(turn, True, pictures.Black, pictures.White)
         return
     elif mass[0] == "ask":
         mass.pop(0)
@@ -206,7 +206,6 @@ def get_message():
             pygame.display.flip()
             return
         else:
-
             pictures.screen.fill(pictures.Black)
             massage = pictures.font2.render(mass[1]+" won", True, pictures.Black, pictures.White)
             pictures.screen.blit(massage, (100*pictures.window_ratio, 50*pictures.window_ratio))
