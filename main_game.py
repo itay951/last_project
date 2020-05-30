@@ -4,11 +4,12 @@ from pictures import *
 from Sprite import *
 import socket
 import time
+import tkinter as tk
 
 while True:
     try:
         client_socket = socket.socket()
-        client_socket.connect(("127.0.0.1", 8006))
+        client_socket.connect(("10.70.235.114", 8006))
         client_socket.settimeout(0)
         break
     except:
@@ -19,6 +20,9 @@ BEGIN = False
 PLAYED = False
 LOOSE = False
 GAME = True
+loog = False
+reg = False
+
 board = Board()
 pictures = pictures()
 sprites = [Sprite("Miss Scarlett", 16, 0, pictures.red), Sprite("Colonel Mustard", 23, 7, pictures.yellow),
@@ -247,6 +251,22 @@ def all_out():
     return
 
 
+def ms_login(mass):
+    global loog
+    if mass[1] == "good":
+        loog = True
+    else:
+        log_in(True)
+
+
+def ms_register(mass):
+    global reg
+    if mass[1] == "good":
+        reg = True
+    else:
+        register(True)
+
+
 def get_message():
     # tries to get a message from the server and if it gets a message it checks what it says and call the right function
     try:
@@ -254,6 +274,10 @@ def get_message():
     except:
         return
     mass = mass.split(",")
+    if mass[0] == "register":
+        ms_register(mass)
+    if mass[0] == "login":
+        ms_login(mass)
     if mass[0] == "all out":
         all_out()
         return
@@ -318,6 +342,35 @@ def move(deck):
     return True
 
 
+def login_page():
+    global loog, reg
+    
+    
+def first_page():
+    first = True
+    while first:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                return False
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_x, mouse_y = event.pos
+                if 400 * pictures.window_ratio < mouse_y < 500 * pictures.window_ratio:
+                    if 100 * pictures.window_ratio < mouse_x < 340 * pictures.window_ratio:
+                        log_in()
+                if 400 * pictures.window_ratio < mouse_y < 500 * pictures.window_ratio:
+                    if 600 * pictures.window_ratio < mouse_x < 980 * pictures.window_ratio:
+                        register()
+        button = pictures.font3.render("login", True, pictures.Black, pictures.White)
+        pictures.screen.blit(pictures.bg, (0, 0))
+        pictures.screen.blit(button, (100 * pictures.window_ratio, 400 * pictures.window_ratio))
+        button2 = pictures.font3.render("register", True, pictures.Black, pictures.White)
+        pictures.screen.blit(button2, (600 * pictures.window_ratio, 400 * pictures.window_ratio))
+        pygame.display.flip()
+        get_message()
+        if loog or reg:
+            return True
+
+
 def first_page():
     first = True
     while first:
@@ -335,6 +388,56 @@ def first_page():
         pygame.display.flip()
     draw_waiting_room()
     return True
+
+
+def log(user, password, login):
+    client_socket.send(("login," + user + "," + password).encode())
+    login.destroy()
+
+
+def log_in(tried=False):
+    login = tk.Tk()
+    name_label = tk.Label(text="user name")
+    name_label.pack()
+    name_entry = tk.Entry()
+    name_entry.pack()
+    password_label = tk.Label(text="password")
+    password_label.pack()
+    password_entry = tk.Entry(show="*")
+    password_entry.pack()
+    check = tk.Button(text="log in", command=lambda: log(name_entry.get(), password_entry.get(), login))
+    check.pack()
+    wrong = tk.Label(text="wrong password")
+    if tried:
+        wrong.pack()
+    login.mainloop()
+
+
+def regi(name, password, fname, regster):
+    client_socket.send(("register," + name + "," + password + "," + fname).encode())
+    regster.destroy()
+
+
+def register(tried=False):
+    regster = tk.Tk()
+    f_name_label = tk.Label(text="first name")
+    f_name_label.pack()
+    f_name_entry = tk.Entry()
+    f_name_entry.pack()
+    name_label = tk.Label(text="user name")
+    name_label.pack()
+    name_entry = tk.Entry()
+    name_entry.pack()
+    password_label = tk.Label(text="password")
+    password_label.pack()
+    password_entry = tk.Entry(show="*")
+    password_entry.pack()
+    check = tk.Button(text="register", command=lambda: regi(name_entry.get(), password_entry.get(), f_name_entry.get(), regster))
+    check.pack()
+    wrong = tk.Label(text="this name is already used")
+    if tried:
+        wrong.pack()
+    regster.mainloop()
 
 
 def lobby_page():
@@ -394,6 +497,13 @@ def game_page():
         try:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
+                    if not PLAYED:
+                        client_socket.send("end".encode())
+                    return False
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        if not PLAYED:
+                            client_socket.send("end".encode())
                     client_socket.send("end".encode())
                     return False
                 if event.type == pygame.KEYDOWN:
@@ -499,7 +609,12 @@ def end_page():
 
 
 def main():
+    move_on = login_page()
+    if move_on:
+        move_on = first_page()
+
     move_on = first_page()
+
     if move_on:
         move_on = lobby_page()
 
