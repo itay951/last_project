@@ -9,7 +9,7 @@ import tkinter as tk
 while True:
     try:
         client_socket = socket.socket()
-        client_socket.connect(("127.0.0.1", 8006))
+        client_socket.connect(("10.70.235.114", 8006))
         client_socket.settimeout(0)
         break
     except:
@@ -493,11 +493,13 @@ def game_page():
         try:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    client_socket.send("end".encode())
+                    if not PLAYED:
+                        client_socket.send("end".encode())
                     return False
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
-                        client_socket.send("end".encode())
+                        if not PLAYED:
+                            client_socket.send("end".encode())
                         return False
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     mouse_x, mouse_y = event.pos
