@@ -5,11 +5,12 @@ from Sprite import *
 import socket
 import time
 import tkinter as tk
+from config import *
 
 while True:
     try:
         client_socket = socket.socket()
-        client_socket.connect(("10.70.235.114", 8006))
+        client_socket.connect((IP, PORT))
         client_socket.settimeout(0)
         break
     except:
@@ -22,7 +23,6 @@ LOOSE = False
 GAME = True
 loog = False
 reg = False
-
 board = Board()
 pictures = pictures()
 sprites = [Sprite("Miss Scarlett", 16, 0, pictures.red), Sprite("Colonel Mustard", 23, 7, pictures.yellow),
@@ -344,9 +344,6 @@ def move(deck):
 
 def login_page():
     global loog, reg
-    
-    
-def first_page():
     first = True
     while first:
         for event in pygame.event.get():
@@ -504,11 +501,6 @@ def game_page():
                     if event.key == pygame.K_ESCAPE:
                         if not PLAYED:
                             client_socket.send("end".encode())
-                    client_socket.send("end".encode())
-                    return False
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_ESCAPE:
-                        client_socket.send("end".encode())
                         return False
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     mouse_x, mouse_y = event.pos
@@ -589,10 +581,6 @@ def game_page():
             if PLAYED:
                 get_message()
                 if PLAYERS_OUT:
-                    pictures.screen.fill(pictures.Black)
-                    mas = pictures.font2.render("all other players left game", True, pictures.Black, pictures.White)
-                    pictures.screen.blit(mas, (450 * pictures.window_ratio, 50 * pictures.window_ratio))
-                    pygame.display.flip()
                     return True
                 if LOOSE:
                     return True
@@ -612,9 +600,6 @@ def main():
     move_on = login_page()
     if move_on:
         move_on = first_page()
-
-    move_on = first_page()
-
     if move_on:
         move_on = lobby_page()
 
